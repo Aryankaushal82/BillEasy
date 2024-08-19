@@ -1,4 +1,4 @@
-import HeroPage from "./component/HeroPage";
+import HeroPage from "./component/HeroPage.jsx";
 
 function App() {
   return (
