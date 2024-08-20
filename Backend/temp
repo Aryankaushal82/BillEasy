@@ -1,0 +1,98 @@
+/*
+    server.js
+    npm init -y
+    npm i express
+    npm i nodemon
+    package.json => node change to nodemon
+
+    
+    // importing :
+    const express = require("express");
+    const app = express();
+
+
+    // GET API : 
+    // 2 parameter (path, callback (req, res))
+
+    app.get('/',(req,res)=>{
+        res.send("this is landing page");
+    });
+    app.get('/home',(req,res)=>{
+        res.send("this is home page");
+    });
+    app.get('/contact',(req,res)=>{
+        res.send("this is contact page");
+    });
+    app.get('/register',(req,res)=>{
+        res.send("this is register page");
+    });
+    app.get('/menu',(req,res)=>{
+        res.send("this is menu page");
+    });
+
+
+
+
+    // POST : data chahiye
+    app.use(express.json());  // middlewares 
+
+    app.post('/',(req,res)=>{
+        const readinput = req.body;
+        console.log("this is landing page");
+        res.send(readinput);
+        // ya
+        // res.json({
+        // status: 200,
+        // message: 'success',
+        // data: readinput
+        // })
+    });
+    app.post('/home',(req,res)=>{
+        const ip2 = req.body;
+        console.log("this is home page");
+        res.send(ip2);
+    });
+    app.post('/contact',(req,res)=>{
+        const ip3 = req.body;
+        console.log("this is contact page");
+        res.send(ip3);
+    });
+    app.post('/register',(req,res)=>{
+        const ip4 = req.body;
+        console.log("this is register page");
+        res.send(ip4);  
+    });
+    app.post('/menu',(req,res)=>{
+        const ip5 = req.body;
+        console.log("this is menu page");
+        res.send(ip5);
+    });
+
+
+    // connecting moongoose :
+    npm i mongoose
+    const mongoose = require("mongoose")  // library
+
+    const url = `mongodb+srv://${username}:${password}@cluster0.suvghv0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+
+    mongoose.connect(url)
+    .then((data)=>{                             // then (callback)
+        console.log('Db Connected', data);    
+    }).catch((err) =>{
+        console.log(err);
+    })
+
+
+    // dynamic url :  
+    const username = "amansharma865865";
+    const password = "Aman568568";
+
+    
+    // Server Starting :
+    // (port and , callback)
+    // internal function , callback is enough t ohandle this
+    app.listen(3000,() =>{
+    console.log("this is Server");
+});
+*/
+
