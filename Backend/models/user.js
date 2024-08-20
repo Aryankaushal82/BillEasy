@@ -10,8 +10,3 @@ const userSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model('user', userSchema)
-
-
-
-// module is package , it should be exported
-// (name of collection , )
