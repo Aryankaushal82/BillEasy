@@ -74,8 +74,7 @@ const Dashboard = () => {
 
         {/* Traffic chart & Pie Chart */}
 
-        <div className="grid grid-cols-1 gap-5 rounded-[20px] md:grid-cols-2">
-          <DailyTraffic />
+        <div className="grid grid-cols-1 gap-5 rounded-[20px] md:grid-cols-1">
           <PieChartCard />
         </div>
 
@@ -88,9 +87,9 @@ const Dashboard = () => {
 
         {/* Task chart & Calendar */}
 
-        <div className="grid grid-cols-1 gap-5 rounded-[20px] md:grid-cols-2">
-          <TaskCard />
-          <div className="grid grid-cols-1 rounded-[20px]">
+        <div className="grid grid-cols-1 gap-5 rounded-[20px] md:grid-cols-1">
+          {/* <TaskCard /> */}
+          <div className="grid grid-cols-2  rounded-[20px]">
             <MiniCalendar />
           </div>
         </div>

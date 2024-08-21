@@ -16,10 +16,10 @@ function CheckTable(props) {
   const [sorting, setSorting] = React.useState([]);
   let defaultData = tableData;
   const columns = [
-    columnHelper.accessor("name", {
-      id: "name",
+    columnHelper.accessor("id", {
+      id: "id",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">NAME</p>
+        <p className="text-sm font-bold text-gray-600 dark:text-white">ID</p>
       ),
       cell: (info) => (
         <div className="flex items-center">
@@ -34,11 +34,11 @@ function CheckTable(props) {
         </div>
       ),
     }),
-    columnHelper.accessor("progress", {
-      id: "progress",
+    columnHelper.accessor("name", {
+      id: "name",
       header: () => (
         <p className="text-sm font-bold text-gray-600 dark:text-white">
-          PROGRESS
+          NAME
         </p>
       ),
       cell: (info) => (
@@ -47,11 +47,11 @@ function CheckTable(props) {
         </p>
       ),
     }),
-    columnHelper.accessor("quantity", {
-      id: "quantity",
+    columnHelper.accessor("status", {
+      id: "status",
       header: () => (
         <p className="text-sm font-bold text-gray-600 dark:text-white">
-          QUANTITY
+          STATUS
         </p>
       ),
       cell: (info) => (

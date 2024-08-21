@@ -1,64 +1,128 @@
-import Card from "components/card";
 import React from "react";
+import { MdModeEditOutline } from "react-icons/md";
+import Card from "components/card";
 
 const General = () => {
   return (
-    <Card extra={"w-full h-full p-3"}>
-      {/* Header */}
-      <div className="mt-2 mb-8 w-full">
-        <h4 className="px-2 text-xl font-bold text-navy-700 dark:text-white">
-          General Information
+    <Card extra={"w-full p-4 h-full"}>
+      <div className="mb-8 w-full">
+        <h4 className="text-xl font-bold text-navy-700 dark:text-white">
+          User Information
         </h4>
-        <p className="mt-2 px-2 text-base text-gray-600">
-          As we live, our hearts turn colder. Cause pain is what we go through
-          as we become older. We get insulted by others, lose trust for those
-          others. We get back stabbed by friends. It becomes harder for us to
-          give others a hand. We get our heart broken by people we love, even
-          that we give them all...
+        <p className="mt-2 text-base text-gray-600">
+          Here you can find detailed information about the user. Make sure all the data is up to date and accurate.
         </p>
       </div>
-      {/* Cards */}
-      <div className="grid grid-cols-2 gap-4 px-2">
-        <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-          <p className="text-sm text-gray-600">Education</p>
-          <p className="text-base font-medium text-navy-700 dark:text-white">
-            Stanford University
-          </p>
+      {/* Full Name */}
+      <div className="flex w-full items-center justify-between rounded-2xl bg-white p-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+        <div className="flex items-center">
+          <div className="ml-4">
+            <p className="text-base font-medium text-navy-700 dark:text-white">
+              Full Name: John Doe
+            </p>
+            <p className="mt-2 text-sm text-gray-600">
+              Full legal name of the user.
+            </p>
+          </div>
         </div>
-
-        <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-          <p className="text-sm text-gray-600">Languages</p>
-          <p className="text-base font-medium text-navy-700 dark:text-white">
-            English, Spanish, Italian
-          </p>
+        <div className="mr-4 flex items-center justify-center text-gray-600 dark:text-white">
+          <MdModeEditOutline />
         </div>
-
-        <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-          <p className="text-sm text-gray-600">Department</p>
-          <p className="text-base font-medium text-navy-700 dark:text-white">
-            Product Design
-          </p>
+      </div>
+      {/* Email */}
+      <div className="mt-3 flex w-full items-center justify-between rounded-2xl bg-white p-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+        <div className="flex items-center">
+          <div className="ml-4">
+            <p className="text-base font-medium text-navy-700 dark:text-white">
+              Email: johndoe@example.com
+            </p>
+            <p className="mt-2 text-sm text-gray-600">
+              User's primary email address.
+            </p>
+          </div>
         </div>
-
-        <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-          <p className="text-sm text-gray-600">Work History</p>
-          <p className="text-base font-medium text-navy-700 dark:text-white">
-            English, Spanish, Italian
-          </p>
+        <div className="mr-4 flex items-center justify-center text-gray-600 dark:text-white">
+          <MdModeEditOutline />
         </div>
-
-        <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-          <p className="text-sm text-gray-600">Organization</p>
-          <p className="text-base font-medium text-navy-700 dark:text-white">
-            Simmmple Web LLC
-          </p>
+      </div>
+      {/* Mobile Number */}
+      <div className="mt-3 flex w-full items-center justify-between rounded-2xl bg-white p-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+        <div className="flex items-center">
+          <div className="ml-4">
+            <p className="text-base font-medium text-navy-700 dark:text-white">
+              Mobile Number: +91 9876543210
+            </p>
+            <p className="mt-2 text-sm text-gray-600">
+              User's primary contact number.
+            </p>
+          </div>
         </div>
-
-        <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-          <p className="text-sm text-gray-600">Birthday</p>
-          <p className="text-base font-medium text-navy-700 dark:text-white">
-            20 July 1986
-          </p>
+        <div className="mr-4 flex items-center justify-center text-gray-600 dark:text-white">
+          <MdModeEditOutline />
+        </div>
+      </div>
+      {/* Company Name */}
+      <div className="mt-3 flex w-full items-center justify-between rounded-2xl bg-white p-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+        <div className="flex items-center">
+          <div className="ml-4">
+            <p className="text-base font-medium text-navy-700 dark:text-white">
+              Company Name: XYZ Pvt Ltd
+            </p>
+            <p className="mt-2 text-sm text-gray-600">
+              The company the user is associated with.
+            </p>
+          </div>
+        </div>
+        <div className="mr-4 flex items-center justify-center text-gray-600 dark:text-white">
+          <MdModeEditOutline />
+        </div>
+      </div>
+      {/* PAN Number */}
+      <div className="mt-3 flex w-full items-center justify-between rounded-2xl bg-white p-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+        <div className="flex items-center">
+          <div className="ml-4">
+            <p className="text-base font-medium text-navy-700 dark:text-white">
+              PAN Number: ABCDE1234F
+            </p>
+            <p className="mt-2 text-sm text-gray-600">
+              User's Permanent Account Number (PAN) for tax purposes.
+            </p>
+          </div>
+        </div>
+        <div className="mr-4 flex items-center justify-center text-gray-600 dark:text-white">
+          <MdModeEditOutline />
+        </div>
+      </div>
+      {/* GST Number */}
+      <div className="mt-3 flex w-full items-center justify-between rounded-2xl bg-white p-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+        <div className="flex items-center">
+          <div className="ml-4">
+            <p className="text-base font-medium text-navy-700 dark:text-white">
+              GST Number: 22ABCDE1234F2Z5
+            </p>
+            <p className="mt-2 text-sm text-gray-600">
+              User's Goods and Services Tax Identification Number (GSTIN).
+            </p>
+          </div>
+        </div>
+        <div className="mr-4 flex items-center justify-center text-gray-600 dark:text-white">
+          <MdModeEditOutline />
+        </div>
+      </div>
+      {/* Company ID */}
+      <div className="mt-3 flex w-full items-center justify-between rounded-2xl bg-white p-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+        <div className="flex items-center">
+          <div className="ml-4">
+            <p className="text-base font-medium text-navy-700 dark:text-white">
+              Company ID: COMP12345
+            </p>
+            <p className="mt-2 text-sm text-gray-600">
+              Unique ID assigned to the user's company.
+            </p>
+          </div>
+        </div>
+        <div className="mr-4 flex items-center justify-center text-gray-600 dark:text-white">
+          <MdModeEditOutline />
         </div>
       </div>
     </Card>

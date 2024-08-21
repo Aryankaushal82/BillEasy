@@ -1,4 +1,5 @@
 import React from 'react';
+import frame1 from "../../../assets/frame1.png"
 
 const CenteredImage = () => {
 
@@ -9,7 +10,7 @@ const CenteredImage = () => {
     >
       {/* Main Image */}
       <img
-        src="https://horizon-ui.com/pro/static/media/main-dashboard-pro-hero.89c0ad9e30d788ba5a8a.png"
+        src={frame1}
         alt="Centered"
         className="w-4/5 animate-fade-up"
       />

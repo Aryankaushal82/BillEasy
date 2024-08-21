@@ -18,19 +18,21 @@ const Tables = () => {
   return (
     <div>
       <div className="mt-5 grid h-full grid-cols-1 gap-5 md:grid-cols-2">
-        <DevelopmentTable
-          columnsData={columnsDataDevelopment}
-          tableData={tableDataDevelopment}
+      <ComplexTable
+          columnsData={columnsDataComplex}
+          tableData={tableDataComplex}
         />
-        <CheckTable columnsData={columnsDataCheck} tableData={tableDataCheck} />
+      <ComplexTable
+          columnsData={columnsDataComplex}
+          tableData={tableDataComplex}
+        />
       </div>
 
       <div className="mt-5 grid h-full grid-cols-1 gap-5 md:grid-cols-2">
-        <ColumnsTable
-          columnsData={columnsDataColumns}
-          tableData={tableDataColumns}
+        <ComplexTable
+          columnsData={columnsDataComplex}
+          tableData={tableDataComplex}
         />
-
         <ComplexTable
           columnsData={columnsDataComplex}
           tableData={tableDataComplex}

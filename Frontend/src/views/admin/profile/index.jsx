@@ -13,11 +13,11 @@ const ProfileOverview = () => {
           <Banner />
         </div>
 
-        <div className="col-span-3 lg:!mb-0">
+        {/* <div className="col-span-3 lg:!mb-0">
           <Storage />
-        </div>
+        </div> */}
 
-        <div className="z-0 col-span-5 lg:!mb-0">
+        <div className="z-0 col-span-8 lg:!mb-0">
           <Upload />
         </div>
       </div>
