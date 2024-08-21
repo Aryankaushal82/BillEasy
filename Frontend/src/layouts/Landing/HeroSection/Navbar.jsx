@@ -56,12 +56,12 @@ const Navbar = () => {
           </li>
           <li>
             <a href="#Services" className="text-l font-medium  hover:underline">
-              Services
+              Pricing
             </a>
           </li>
           <li>
             <a href="#Contact" className="text-l font-medium hover:underline">
-              Contact
+              FAQ
             </a>
           </li>
         </ul>
