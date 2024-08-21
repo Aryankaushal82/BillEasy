@@ -1,5 +1,5 @@
 import React from 'react';
-import videoimg from '../../../assets/videoimg.jpg';
+import videoimg from '../../../assets/videoimg.png';
 import checkmark from '../../../assets/checkmark.png';
 
 const TAXES = () => {

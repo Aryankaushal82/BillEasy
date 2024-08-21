@@ -1,10 +1,11 @@
-import logo from '../../assets/logo.png'
-
+import whitelogo from '../../assets/whitelogo.png'
 import { HiX } from "react-icons/hi";
 import Links from "./components/Links";
+import { Link } from 'react-router-dom'
 
 import SidebarCard from "components/sidebar/componentsrtl/SidebarCard";
 import routes from "routes.js";
+import { useState } from 'react';
 
 const Sidebar = ({ open, onClose }) => {
   return (
@@ -21,9 +22,11 @@ const Sidebar = ({ open, onClose }) => {
       </span>
 
       <div className={`mx-[56px] mt-[50px] flex items-center`}>
+        <Link to={'/'}>
         <div className="mt-1 ml-1 h-2.5 font-poppins text-[26px] font-bold uppercase text-navy-700 dark:text-white">
-          <img src={logo} alt="" className='w-44 h-7'/>
+          <img src={whitelogo} alt="" className='w-44 h-10 invert-0 bg-blueSecondary  p-2 rounded-lg'/>
         </div>
+        </Link>
       </div>
       <div class="mt-[58px] mb-7 h-px bg-gray-300 dark:bg-white/30" />
       {/* Nav item */}
@@ -32,10 +35,7 @@ const Sidebar = ({ open, onClose }) => {
         <Links routes={routes} />
       </ul>
 
-      {/* Free Horizon Card */}
-      <div className="flex justify-center">
-        <SidebarCard />
-      </div>
+      
 
       {/* Nav item end */}
     </div>

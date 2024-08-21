@@ -34,6 +34,7 @@ module.exports = {
         'pop-up': 'pop-up 0.5s ease-out',
       },
       
+      
       width: {
         "1p": "1%",
         "2p": "2%",

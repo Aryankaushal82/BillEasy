@@ -15,7 +15,7 @@ function Inventory() {
       <Storage/>
       <Upload/>
       </div>
-      <div className="mt-5 grid w-full h-full "> 
+      <div className="mt-5 grid w-full h-full pb-4 "> 
       <Table columnsData={columnsDataCheck} tableData={tableDataCheck} />
       </div>
     </div>

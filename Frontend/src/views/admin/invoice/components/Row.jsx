@@ -5,7 +5,7 @@ import Decline from './options/Decline';
 
 const Row = ({ invoiceId, date, nameOfCustomer, amount, status }) => {
   return (
-    <div className='w-full h-auto rounded-md flex flex-row m-auto justify-between items-center p-3 shadow-md hover:bg-[#f5f8fe] dark:bg-gray-800 dark:border-gray-700 dark:hover:border-blue-500'>
+    <div className='w-full h-auto rounded-md flex flex-row m-auto justify-between items-center p-3 shadow-md hover:bg-[#f5f8fe] dark:bg-[#1b254b] dark:border-gray-700 dark:hover:border-blue-500'>
       <div className="id">
         <p className='font-semibold text-gray-800 dark:text-gray-200'>{invoiceId}</p>
       </div>  
