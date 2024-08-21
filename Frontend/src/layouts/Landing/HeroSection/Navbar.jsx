@@ -1,7 +1,7 @@
 import Auth from "layouts/auth";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import logo from "../../../assets/whitelogo.png";
 
 const Navbar = () => {
   const [navbarFixed, setNavbarFixed] = useState(false);
@@ -24,36 +24,43 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`p-4 w-full z-50 transition duration-500 ease-in-out ${navbarFixed
-        ? "fixed top-0 bg-white text-black shadow-lg"
-        : "absolute top-2 bg-transparent text-white"
-        }`}
+      className={`p-4 w-full z-50 transition-all duration-500 ease-in-out ${
+        navbarFixed
+          ? "fixed top-0 bg-white text-black shadow-lg"
+          : "absolute top-2 bg-transparent text-white"
+      }`}
     >
       <div className="container mx-auto flex items-center">
-        {/* Left Side: Logo with increased spacing from the left */}
-        <div className="flex items-center flex-grow pl-6">
-          <img src="logo.png" alt="Logo" className="h-8 w-8" />
+        {/* Left Side: Logo with conditional invert filter */}
+        <div className="flex items-center flex-grow w-32">
+          <img
+            src={logo}
+            alt="Logo"
+            className={`h-7 w-48 transition duration-500 ${
+              navbarFixed ? "invert" : ""
+            }`}
+          />
         </div>
 
         {/* Center: Navigation Links */}
         <ul className="flex space-x-16 flex-grow justify-center">
           <li>
-            <a href="#Home" className="hover:underline">
+            <a href="#Home" className="text-l font-medium  hover:underline ">
               Home
             </a>
           </li>
           <li>
-            <a href="#About" className="hover:underline">
-              About
+            <a href="#About" className="text-l font-medium  hover:underline">
+              Features
             </a>
           </li>
           <li>
-            <a href="#Services" className="hover:underline">
+            <a href="#Services" className="text-l font-medium  hover:underline">
               Services
             </a>
           </li>
           <li>
-            <a href="#Contact" className="hover:underline">
+            <a href="#Contact" className="text-l font-medium hover:underline">
               Contact
             </a>
           </li>
@@ -63,7 +70,7 @@ const Navbar = () => {
         <div className="flex items-center flex-grow justify-end">
           <Link
             to={'auth/sign-up'}
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+            className="bg-blue-700 mix-blend-multiply text-white py-2 px-4 rounded-3xl transform hover:bg-blue-500 transition duration-300"
           >
             Sign Up
           </Link>

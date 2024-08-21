@@ -25,32 +25,32 @@ const Dashboard = () => {
         <Widget
           icon={<MdBarChart className="h-7 w-7" />}
           title={"Earnings"}
-          subtitle={"$340.5"}
+          subtitle={"₹ 350000"}
         />
         <Widget
           icon={<IoDocuments className="h-6 w-6" />}
           title={"Spend this month"}
-          subtitle={"$642.39"}
+          subtitle={"₹ 200000"}
         />
         <Widget
           icon={<MdBarChart className="h-7 w-7" />}
           title={"Sales"}
-          subtitle={"$574.34"}
+          subtitle={"₹ 150000"}
         />
         <Widget
           icon={<MdDashboard className="h-6 w-6" />}
           title={"Your Balance"}
-          subtitle={"$1,000"}
+          subtitle={"₹ 900000"}
         />
         <Widget
           icon={<MdBarChart className="h-7 w-7" />}
           title={"New Tasks"}
-          subtitle={"145"}
+          subtitle={"14"}
         />
         <Widget
           icon={<IoMdHome className="h-6 w-6" />}
-          title={"Total Projects"}
-          subtitle={"$2433"}
+          title={"Total Companies"}
+          subtitle={"172"}
         />
       </div>
 

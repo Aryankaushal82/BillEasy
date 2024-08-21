@@ -17,11 +17,21 @@ module.exports = {
           '0%': { opacity: '0.4' },
           '100%': { opacity: '1' },
         },
+        'fade-up': {
+          '0%': { opacity: 0, transform: 'translateY(20px)' },
+          '100%': { opacity: 1, transform: 'translateY(0)' },
+        },
+        'pop-up': {
+          '0%': { opacity: '0', transform: 'scale(0.5)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
       },
       animation: {
         'slide-right': 'slide-right 1s forwards',
         'slide-left': 'slide-left 1s forwards',
         'fade': 'fade 1s ease-in-out',
+        'fade-up': 'fade-up 1.5s ease-out',
+        'pop-up': 'pop-up 0.5s ease-out',
       },
       
       width: {
