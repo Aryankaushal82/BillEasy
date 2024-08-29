@@ -6,6 +6,6 @@ const customerSchema = new mongoose.Schema({
     customer_email : { type: String, required: true },
     branch_id : { type: String },
     branch_email : { type: String , required: true}
-})
+},{timestamps: true})
 
 module.exports = mongoose.model('customer', customerSchema)

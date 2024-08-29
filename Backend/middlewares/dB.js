@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const { moncrd } = require('../config/cred')
-
+const {moncrd}  = require('../config/cred');
 const url = `mongodb+srv://${moncrd.user}:${moncrd.pass}@cluster0.oxhj6pg.mongodb.net`;
 
 

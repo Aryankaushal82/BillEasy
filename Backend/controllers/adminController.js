@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const user = require('../models/admin')
+const admin = require('../models/admin')
 
 const mail = require('../helper/sendMail')
 const sms = require('../helper/smsService')
@@ -9,55 +9,55 @@ const whatsapp = require('../helper/whatsapp')
 const register = async (req, res) => {
   try {
     const inputData = req.body;
-    console.log('register', inputData);
+    if (!inputData) return res.json({
+      message:"failed",
+      status:"400",
+      error:"please fill the form completely"
 
+    })
     if (!inputData.admin_id || !inputData.user_name || !inputData.admin_email || !inputData.admin_password || !inputData.admin_mobile_number) {
-      console.log("Provide data");
-      return res.send('Provide data')
-    }
-    //if data already exists
-    const checkId = await user.findOne({ 'Id': inputData.admin_id });
-    const checkName = await user.findOne({ 'Id': inputData.user_name });
-    const checkEmail = await user.findOne({ 'email': inputData.admin_email });
-    const checkMobile = await user.findOne({ 'mobile_number': inputData.admin_mobile_number });
-    console.log(checkEmail);
-
-    if (checkEmail || checkMobile || checkId || checkName) {
-      res.json({
-        status: 409,
-        message: 'User already exists'
+      return res.json({
+        message:"failed",
+      status:"400",
+      error:"please fill the missed columns"
       })
     }
-    ///
-    const createUser = await user.create(inputData);
-    const sendMail = await mail.SendGreetMail(inputData.email)
-    console.log('create', createUser);
+    //if data already exists
+    const userExist = await admin.findOne({
+      $or: [{user_name},{admin_email},{admin_id}]
+  });
+  
+  if (userExist) {
     res.json({
-      status: 200,
-      message: 'Register successfull',
-      data: inputData,
-      db: createUser,
-      mailSent: sendMail
-    });
+      message:"sucess",
+      status: 409,
+      message: 'User already exists'
+    })
+  }
+
+  //hashing password 
+  const encryptPassword = await admin.encryptPassword(password);
+  
+  const createUser = await admin.create({
+    admin_id:inputData.admin_id,
+    user_name:inputData.user_name,
+    admin_email:inputData.admin_email,
+    admin_password:encryptPassword,
+    admin_mobile_number:inputData.admin_mobile_number
+  })
+  const sendMail = await mail.SendGreetMail(inputData.email)
+  console.log(createUser)
+  return res.json({
+    message:"sucess",
+    status: 200,
+    data:userData,
+    msg:`hey ${inputData.user_name} you are register sucessfully`
+  })
   } catch (err) {
-    res.send(err);
+    res.send("error occured while registering the admin",err);
   }
 }
-const sendEmail = async (req, res) => {
-  try {
-    const inputData = req.body;
-    const sendMail = await mail.SendGreetMail(inputData);
-    console.log(sendMail);
-    res.json({
-      status: 200,
-      message: `Register successfull `,
-      data: inputData,
-      mailSent: sendMail
-    });
-  } catch (err) {
-    res.send(err)
-  }
-}
+
 const sendMessage = async (req, res) => {
   console.log('hello')
   try {
@@ -127,4 +127,4 @@ const deleteUser = async (req, res) => {
     res.send(err);
   }
 }
-module.exports = { register, getUsers, updateUser, deleteUser, sendEmail, sendMessage, sendWhatsapp }
+module.exports = { register, getUsers, updateUser, deleteUser, sendMessage, sendWhatsapp }
