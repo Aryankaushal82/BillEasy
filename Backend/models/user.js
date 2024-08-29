@@ -7,6 +7,6 @@ const userSchema = new mongoose.Schema({
     user_role : { type: String },
     user_status : { type: String },
     user_assigned_branch : { type:  String}
-},{timestamps: true})
+})
 
 module.exports = mongoose.model('user', userSchema)

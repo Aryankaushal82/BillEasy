@@ -7,6 +7,6 @@ const invoiceSchema = new mongoose.Schema({
     invoice_created_at : { type: Date },               
     invoice_total_amount : { type: Number },
     invoice_branch_id : { type: String }
-},{timestamps: true})
+})
 
 module.exports = mongoose.model('invoice', invoiceSchema)

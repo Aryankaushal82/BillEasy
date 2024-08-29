@@ -1,31 +1,28 @@
-const express = require('express');
+const express = require('express')
 const app = express();
 const PORT = 3000;
+app.use(express.json())
 const dbConnect = require('./middlewares/dB');
-const adminController = require('./controllers/adminController');
-const inventoryController = require('./controllers/inventory.controller');
-
-app.use(express.json());
+const admincontroller = require('./controllers/adminController')
 dbConnect();
+app.get('/', (req, res) => {
+    res.send('Hello Aryan')
+})
+app.get('/home', (req, res) => {
+    res.send('helloooo')
+})
+app.get('/user-list', admincontroller.getUsers)
 
-// Admin routes
+app.post('/register', admincontroller.register)
+app.post('/send', admincontroller.sendEmail)
 
-// app.use("api/v1/admin",adminRoute);
-// app.get('/user-list', adminController.getUsers);
-app.post('/register', adminController.register);
-// app.post('/send', adminController.sendEmail);
-// app.get('/sms', adminController.sendMessage);
-// app.get('/whatsapp', adminController.sendWhatsapp);
-// app.post('/update/:_id', adminController.updateUser);
-// app.post('/delete/:_id', adminController.deleteUser);
+app.get('/sms', admincontroller.sendMessage)
+app.get('/whatsapp', admincontroller.sendWhatsapp)
 
-// // Inventory routes
-// app.post('/add-item', inventoryController.addProduct); 
-// app.get('/items', inventoryController.getAllItems);
-// app.get('/item/:id', inventoryController.getItemById);
-// app.put('/item/:id', inventoryController.updateItemById);
-// app.delete('/item/:id', inventoryController.deleteItemById);
+app.post('/update/:_id', admincontroller.updateUser)
+app.post('/delete/:_id', admincontroller.deleteUser)
+
 
 app.listen(PORT, () => {
     console.log(`Server started on ${PORT}`);
-});
+})
