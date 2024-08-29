@@ -1,28 +1,33 @@
-const express = require('express')
+const express = require('express');
 const app = express();
 const PORT = 3000;
-app.use(express.json())
-const dbConnect = require('./middlewares/dB');
-const admincontroller = require('./controllers/adminController')
+
+// Middleware to parse JSON requests
+app.use(express.json());
+
+// Database connection
+const dbConnect = require('./middlewares/db');
 dbConnect();
+
+// Routes
 app.get('/', (req, res) => {
-    res.send('Hello Aryan')
-})
+    res.send('Hello Aryan');
+});
+
 app.get('/home', (req, res) => {
-    res.send('helloooo')
-})
-app.get('/user-list', admincontroller.getUsers)
+    res.send('helloooo');
+});
 
-app.post('/register', admincontroller.register)
-app.post('/send', admincontroller.sendEmail)
+// Use the routes defined in the routes folder
+const adminRoutes = require('./routes/adminRoutes');
+const inventoryRoutes = require('./routes/inventoryRoutes');
+const branchRoutes = require('./routes/branchRoutes');
 
-app.get('/sms', admincontroller.sendMessage)
-app.get('/whatsapp', admincontroller.sendWhatsapp)
+app.use('/admin', adminRoutes);
+app.use('/inventory', inventoryRoutes);
+app.use('/branches', branchRoutes);
 
-app.post('/update/:_id', admincontroller.updateUser)
-app.post('/delete/:_id', admincontroller.deleteUser)
-
-
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server started on ${PORT}`);
-})
+});

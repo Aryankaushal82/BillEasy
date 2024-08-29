@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const user = require('../models/admin')
+const admin = require('../models/admin')
 
 const mail = require('../helper/sendMail')
 const sms = require('../helper/smsService')
@@ -9,122 +9,130 @@ const whatsapp = require('../helper/whatsapp')
 const register = async (req, res) => {
   try {
     const inputData = req.body;
-    console.log('register', inputData);
-
-    if (!inputData.admin_id || !inputData.user_name || !inputData.admin_email || !inputData.admin_password || !inputData.admin_mobile_number) {
-      console.log("Provide data");
-      return res.send('Provide data')
+    if (!inputData) {
+      return res.json({
+        message: "failed",
+        status: "400",
+        error: "please fill the form completely"
+      });
     }
-    //if data already exists
-    const checkId = await user.findOne({ 'Id': inputData.admin_id });
-    const checkName = await user.findOne({ 'Id': inputData.user_name });
-    const checkEmail = await user.findOne({ 'email': inputData.admin_email });
-    const checkMobile = await user.findOne({ 'mobile_number': inputData.admin_mobile_number });
-    console.log(checkEmail);
 
-    if (checkEmail || checkMobile || checkId || checkName) {
-      res.json({
+    const { admin_id, user_name, admin_email, admin_password, admin_mobile_number } = inputData;
+
+    if (!admin_id || !user_name || !admin_email || !admin_password || !admin_mobile_number) {
+      return res.json({
+        message: "failed",
+        status: "400",
+        error: "please fill the missed columns"
+      });
+    }
+
+    // Check if data already exists
+    const userExist = await admin.findOne({
+      $or: [{ user_name }, { admin_email }, { admin_id }]
+    });
+
+    if (userExist) {
+      return res.json({
+        message: "failed",
         status: 409,
         message: 'User already exists'
-      })
+      });
     }
-    ///
-    const createUser = await user.create(inputData);
-    const sendMail = await mail.SendGreetMail(inputData.email)
-    console.log('create', createUser);
-    res.json({
+
+    // Hashing password 
+    const encryptPassword = await admin.encryptPassword(admin_password);
+
+    const createUser = await admin.create({
+      admin_id,
+      user_name,
+      admin_email,
+      admin_password: encryptPassword,
+      admin_mobile_number
+    });
+
+    // Send email
+    await mail.SendGreetMail(admin_email);
+
+    return res.json({
+      message: "success",
       status: 200,
-      message: 'Register successfull',
-      data: inputData,
-      db: createUser,
-      mailSent: sendMail
+      data: createUser,
+      msg: `Hey ${user_name}, you have registered successfully`
     });
   } catch (err) {
-    res.send(err);
+    res.status(500).send("Error occurred while registering the admin: " + err.message);
   }
 }
-const sendEmail = async (req, res) => {
-  try {
-    const inputData = req.body;
-    const sendMail = await mail.SendGreetMail(inputData);
-    console.log(sendMail);
-    res.json({
-      status: 200,
-      message: `Register successfull `,
-      data: inputData,
-      mailSent: sendMail
-    });
-  } catch (err) {
-    res.send(err)
-  }
-}
+
 const sendMessage = async (req, res) => {
-  console.log('hello')
   try {
     const sendMessage = await sms.sendAccountCreateGreetSms();
-    console.log(sendMessage);
     res.json({
       status: 200,
-      message: `Register successfull `,
+      message: `Register successful`,
       messageSent: sendMessage
     });
   } catch (err) {
-    res.send(err)
+    res.status(500).send(err.message);
   }
 }
+
 const sendWhatsapp = async (req, res) => {
-  console.log('hello')
   try {
     const sendMessage = await whatsapp.sendAccountCreateGreetWhatsapp();
-    console.log(sendMessage);
     res.json({
       status: 200,
-      message: `Register successfull `,
+      message: `Register successful`,
       messageSent: sendMessage
     });
   } catch (err) {
-    res.send(err)
+    res.status(500).send(err.message);
   }
 }
+
 const getUsers = async (req, res) => {
   try {
-    const getData = await user.find();
+    const getData = await admin.find();
     res.json({
       status: 200,
-      message: 'User Found',
+      message: 'Users Found',
       data: getData
-    })
+    });
   } catch (err) {
-    res.send(err);
+    res.status(500).send(err.message);
   }
 }
+
 const updateUser = async (req, res) => {
   try {
     const id = req.params._id;
     const inputData = req.body;
-    const updateData = await user.findByIdAndUpdate(id, inputData, {
+    const updateData = await admin.findByIdAndUpdate(id, inputData, {
       new: true
-    })
+    });
     res.json({
       status: 200,
       message: 'User Updated',
       data: updateData
-    })
+    });
   } catch (err) {
-    res.send(err);
+    res.status(500).send(err.message);
   }
 }
+
 const deleteUser = async (req, res) => {
   try {
     const id = req.params._id;
-    const deleteData = await user.findByIdAndDelete(id)
+    const deleteData = await admin.findByIdAndDelete(id);
     res.json({
       status: 200,
-      message: 'User Deletes',
+      message: 'User Deleted',
       data: deleteData
-    })
+    });
   } catch (err) {
-    res.send(err);
+    res.status(500).send(err.message);
   }
 }
-module.exports = { register, getUsers, updateUser, deleteUser, sendEmail, sendMessage, sendWhatsapp }
+
+module.exports = { register, getUsers, updateUser, deleteUser, sendMessage, sendWhatsapp };
