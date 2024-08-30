@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const admin = require('../models/admin')
+const bcrypt = require('bcryptjs');
 
 const mail = require('../helper/sendMail')
 const sms = require('../helper/smsService')
@@ -41,7 +42,10 @@ const register = async (req, res) => {
     }
 
     // Hashing password 
-    const encryptPassword = await admin.encryptPassword(admin_password);
+    const encryptPassword = await bcrypt.hash(admin_password,10);
+    if (!encryptPassword) {
+      return res.json({sucess: false,message:"dikkat aari hai"});
+    }
 
     const createUser = await admin.create({
       admin_id,
@@ -52,7 +56,11 @@ const register = async (req, res) => {
     });
 
     // Send email
-    await mail.SendGreetMail(admin_email);
+    await mail.SendGreetMail({
+      email:admin_email,
+        name:user_name,
+        pno:admin_mobile_number
+    });
 
     return res.json({
       message: "success",
@@ -61,7 +69,7 @@ const register = async (req, res) => {
       msg: `Hey ${user_name}, you have registered successfully`
     });
   } catch (err) {
-    res.status(500).send("Error occurred while registering the admin: " + err.message);
+    res.status(500).send("Error occurred while registering the admin: " + err);
   }
 }
 

@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const { crd } = require('../config/cred');
 
-exports.SendGreetMail = async (i) => {
+exports.SendGreetMail = async ({email,name,pno}) => {
   try {
     console.log(crd);
 
@@ -20,13 +20,13 @@ exports.SendGreetMail = async (i) => {
 
     const mailOptions = {
       from: 'aryan1383.be22@chitkara.edu.in',
-      to: i.email,
+      to: email,
       subject: 'THANK YOU FOR REGISTERING',
-      html: `Hello, I am Aryan. Your mobile number is ${i.mobile_number}.`,
+      html: `Hello ${name}, I am Aryan. Your mobile number is ${pno}.`,
     };
 
     let info = await mail.sendMail(mailOptions);
-    console.log(`Invoice Mail sent to ${i.email}`, info.messageId);
+    console.log(`Invoice Mail sent to ${email}`, info.messageId);
     return true;
   } catch (err) {
     console.error(`Failed to send email: ${err}`);

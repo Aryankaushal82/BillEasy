@@ -22,10 +22,12 @@ app.get('/home', (req, res) => {
 const adminRoutes = require('./routes/adminRoutes');
 const inventoryRoutes = require('./routes/inventoryRoutes');
 const branchRoutes = require('./routes/branchRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 app.use('/admin', adminRoutes);
 app.use('/inventory', inventoryRoutes);
 app.use('/branches', branchRoutes);
+app.use('/user', userRoutes);
 
 // Start the server
 app.listen(PORT, () => {
