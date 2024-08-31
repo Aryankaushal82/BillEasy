@@ -17,11 +17,13 @@ const inventoryBranchSchema = new mongoose.Schema({
   },
   // storage: {
   //   type: Number,
-
+  //   required: true
   // },
+
   branch_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'branch'
+    ref: 'Branch',
+    required: true
   }
 }, { timestamps: true });
 
