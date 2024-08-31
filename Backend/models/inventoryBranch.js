@@ -15,13 +15,13 @@ const inventoryBranchSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  // storage: {
-  //   type: Number,
-
-  // },
   branch_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'branch'
+  },
+  user_inventory:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
   }
 }, { timestamps: true });
 

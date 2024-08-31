@@ -1,12 +1,15 @@
 const express = require('express');
 const app = express();
+const cookieParser = require('cookie-parser');
 const PORT = 3000;
 
 // Middleware to parse JSON requests
 app.use(express.json());
+app.use(cookieParser())
+
 
 // Database connection
-const dbConnect = require('./middlewares/db');
+const dbConnect = require('./middlewares/dB.js');
 dbConnect();
 
 // Routes

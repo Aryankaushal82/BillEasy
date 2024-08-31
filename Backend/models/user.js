@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
 //     return await bcrypt.compare(password, this.password);
 // };
 
-userSchema.methods.generateAccessToken = async function(){
+userSchema.methods.generateAccessToken =  function(){
     //todo
     return  jwt.sign({
         _id: this._id,
@@ -33,7 +33,7 @@ userSchema.methods.generateAccessToken = async function(){
         fullname: this.user_fullname
     },tokens.ACCESS_TOKEN_SECRET,{expiresIn:tokens.ACCESS_TOKEN_EXPIRY})
 }
-userSchema.methods.generateRefreshToken = async function(){
+userSchema.methods.generateRefreshToken =  function(){
     return jwt.sign({
         _id:this._id
     },tokens.REFRESH_TOKEN_SECRET,{expiresIn:tokens.REFRESH_TOKEN_EXPIRY});

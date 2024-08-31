@@ -18,7 +18,8 @@ const inventorySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'InventoryBranch',
         required: true
-    }
+    },
+    
 }, { timestamps: true });
 
 const Inventory = mongoose.model('Inventory', inventorySchema);
