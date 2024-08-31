@@ -1,113 +1,106 @@
-const express = require('express');
 const Inventory = require('../models/inventory');
+const InventoryBranch = require('../models/inventoryBranch');
 
-// Create a new inventory item
-const createInventoryItem = async (req, res) => {
+// Add a new inventory item
+exports.addItem = async (req, res) => {
   try {
-    const newItem = new Inventory(req.body);
-    const savedItem = await newItem.save();
-    return res.status(201).json({
-      message: 'Inventory item created successfully',
-      data: savedItem
+    const { item_id, item_name, item_quantity, inventoryBranch_id } = req.body;
+
+    // Check if all required fields are provided
+    if (!item_id || !item_name || !item_quantity || !inventoryBranch_id) {
+      return res.status(400).json({
+        message: "failed",
+        error: "Please fill all required fields"
+      });
+    }
+
+    // Check if the inventoryBranch already exists
+    const itemExist = await InventoryBranch.findOne({ item_id });
+
+    if (itemExist) {
+      return res.status(409).json({
+        message: "failed",
+        error: 'Inventory branch with this ID already exists'
+      });
+    }
+
+    const inventorybranch = await InventoryBranch.findOne({ inventoryBranch_id });
+    if (!inventorybranch) {
+      return res.status(404).json({ message: 'Inventory branch not found' });
+    }
+
+    const newItem = new Inventory({
+      item_id,
+      item_name,
+      item_quantity,
+      inventoryBranch: inventorybranch._id
     });
-  } catch (err) {
-    return res.status(500).json({
-      message: 'Error creating inventory item',
-      error: err.message
-    });
+
+    await newItem.save();
+    res.status(201).json(newItem);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
 // Get all inventory items
-const getInventoryItems = async (req, res) => {
+exports.getItems = async (req, res) => {
   try {
-    const items = await Inventory.find().populate('branch');
-    return res.status(200).json({
-      message: 'Inventory items retrieved successfully',
-      data: items
-    });
-  } catch (err) {
-    return res.status(500).json({
-      message: 'Error retrieving inventory items',
-      error: err.message
-    });
+    const items = await Inventory.find().populate('inventoryBranch');
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Get a single inventory item by ID
-const getInventoryItemById = async (req, res) => {
+// Get items by inventoryBranch
+exports.getItemsByBranch = async (req, res) => {
   try {
-    const item = await Inventory.findById(req.params.id).populate('branch');
+    const { inventoryBranch_id } = req.params;
+    const inventorybranch = await InventoryBranch.findOne({ inventoryBranch_id });
+
+    if (!inventorybranch) {
+      return res.status(404).json({ message: 'Inventory inventorybranch not found' });
+    }
+
+    const items = await Inventory.find({ inventoryBranch: inventorybranch._id }).populate('inventoryBranch');
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Update inventory item quantity
+exports.updateItemQuantity = async (req, res) => {
+  try {
+    const { item_id } = req.params;
+    const { item_quantity } = req.body;
+
+    const item = await Inventory.findOne({ item_id });
     if (!item) {
-      return res.status(404).json({
-        message: 'Inventory item not found'
-      });
+      return res.status(404).json({ message: 'Item not found' });
     }
-    return res.status(200).json({
-      message: 'Inventory item retrieved successfully',
-      data: item
-    });
-  } catch (err) {
-    return res.status(500).json({
-      message: 'Error retrieving inventory item',
-      error: err.message
-    });
+
+    item.item_quantity = item_quantity;
+    await item.save();
+    res.status(200).json(item);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Update an inventory item by ID
-const updateInventoryItem = async (req, res) => {
+// Delete an inventory item
+exports.deleteItem = async (req, res) => {
   try {
-    const updatedItem = await Inventory.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true
-    }).populate('branch');
+    const { item_id } = req.params;
 
-    if (!updatedItem) {
-      return res.status(404).json({
-        message: 'Inventory item not found'
-      });
+    const item = await Inventory.findOneAndDelete({ item_id });
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
     }
 
-    return res.status(200).json({
-      message: 'Inventory item updated successfully',
-      data: updatedItem
-    });
-  } catch (err) {
-    return res.status(500).json({
-      message: 'Error updating inventory item',
-      error: err.message
-    });
+    res.status(200).json({ message: 'Item deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-};
-
-// Delete an inventory item by ID
-const deleteInventoryItem = async (req, res) => {
-  try {
-    const deletedItem = await Inventory.findByIdAndDelete(req.params.id);
-
-    if (!deletedItem) {
-      return res.status(404).json({
-        message: 'Inventory item not found'
-      });
-    }
-
-    return res.status(200).json({
-      message: 'Inventory item deleted successfully',
-      data: deletedItem
-    });
-  } catch (err) {
-    return res.status(500).json({
-      message: 'Error deleting inventory item',
-      error: err.message
-    });
-  }
-};
-
-module.exports = {
-  createInventoryItem,
-  getInventoryItems,
-  getInventoryItemById,
-  updateInventoryItem,
-  deleteInventoryItem
 };

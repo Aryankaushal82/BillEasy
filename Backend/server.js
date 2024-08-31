@@ -18,15 +18,17 @@ app.get('/home', (req, res) => {
     res.send('helloooo');
 });
 
-// Use the routes defined in the routes folder
+// Use the routes defined in the routes folder 
 const adminRoutes = require('./routes/adminRoutes');
-const inventoryRoutes = require('./routes/inventoryRoutes');
 const branchRoutes = require('./routes/branchRoutes');
+const inventoryRoutes = require('./routes/inventoryRoutes');
+const inventoryBranchRoutes = require('./routes/inventoryBranchRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 app.use('/admin', adminRoutes);
-app.use('/inventory', inventoryRoutes);
 app.use('/branches', branchRoutes);
+app.use('/inventory', inventoryRoutes);
+app.use('/inventorybranch', inventoryBranchRoutes);
 app.use('/user', userRoutes);
 
 // Start the server
