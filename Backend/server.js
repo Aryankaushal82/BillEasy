@@ -29,7 +29,7 @@ const inventoryBranchRoutes = require('./routes/inventoryBranchRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 app.use('/admin', adminRoutes);
-app.use('/branches', branchRoutes);
+app.use('/branch', branchRoutes);
 app.use('/inventory', inventoryRoutes);
 app.use('/inventorybranch', inventoryBranchRoutes);
 app.use('/user', userRoutes);

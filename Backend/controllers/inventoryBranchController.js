@@ -1,21 +1,30 @@
+const mongoose = require('mongoose');
 const InventoryBranch = require('../models/inventoryBranch');
+const Inventory = require('../models/inventory');
 
 // Add a new inventoryBranch
-exports.addinventoryBranch = async (req, res) => {
+exports.addInventoryBranch = async (req, res) => {
   try {
-    const { inventoryBranch_id, inventoryBranch_type, location } = req.body;
+    const { inventoryBranch_id, inventoryBranch_type, location, branch_id } = req.body;
 
-    // Check if all required fields are provided
-    if (!inventoryBranch_id || !inventoryBranch_type || !location) {
+    // Validate required fields
+    if (!inventoryBranch_id || !inventoryBranch_type || !location || !branch_id) {
       return res.status(400).json({
         message: "failed",
         error: "Please fill all required fields"
       });
     }
 
-    // Check if the inventoryBranch already exists
-    const branchExist = await InventoryBranch.findOne({ inventoryBranch_id });
+    // Validate branch_id if it should be an ObjectId
+    if (!mongoose.Types.ObjectId.isValid(branch_id)) {
+      return res.status(400).json({
+        message: "failed",
+        error: 'Invalid branch ID'
+      });
+    }
 
+    // Check if inventory branch already exists with the given ID
+    const branchExist = await InventoryBranch.findOne({ inventoryBranch_id });
     if (branchExist) {
       return res.status(409).json({
         message: "failed",
@@ -23,12 +32,8 @@ exports.addinventoryBranch = async (req, res) => {
       });
     }
 
-    // Check if an inventoryBranch of the same type already exists under the same branch
-    const existingBranch = await InventoryBranch.findOne({
-      inventoryBranch_type,
-      branch_id
-    });
-
+    // Check if there's already an inventory branch of the same type under the same branch
+    const existingBranch = await InventoryBranch.findOne({ inventoryBranch_type, branch_id });
     if (existingBranch) {
       return res.status(409).json({
         message: "failed",
@@ -36,42 +41,128 @@ exports.addinventoryBranch = async (req, res) => {
       });
     }
 
+    // Create a new inventory branch
     const newInventoryBranch = new InventoryBranch({
       inventoryBranch_id,
       inventoryBranch_type,
-      location
+      location,
+      branch_id
     });
 
     await newInventoryBranch.save();
-    res.status(201).json(newInventoryBranch);
+    res.status(201).json({
+      message: "Inventory branch created successfully",
+      data: newInventoryBranch
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: "failed",
+      error: error.message
+    });
   }
 };
 
 
-// Get all inventoryBranches
-exports.getinventoryBranches = async (req, res) => {
+
+// Get all inventoryBranches under same branch
+exports.getInventoryBranches = async (req, res) => {
   try {
-    const inventoryBranches = await InventoryBranch.find();//AFTER BRANCH CONTROLLER IS MADE CONNECT IT WITH ITS ID
-    res.status(200).json(inventoryBranches);
+    const { branch_id } = req.query;
+    let query = {};
+
+    // Validate branch_id if it should be an ObjectId
+    if (branch_id) {
+      if (!mongoose.Types.ObjectId.isValid(branch_id)) {
+        return res.status(400).json({
+          message: "failed",
+          error: 'Invalid branch ID'
+        });
+      }
+      query.branch_id = branch_id;
+    }
+
+    const inventoryBranches = await InventoryBranch.find(query).populate('branch_id');
+    res.status(200).json({
+      message: "Inventory branches retrieved successfully",
+      data: inventoryBranches
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: "failed",
+      error: error.message
+    });
   }
 };
 
-// Delete a inventoryBranch
-exports.deleteinventoryBranch = async (req, res) => {
+
+// Get all inventory items under each inventory branch of the same branch
+exports.getItemsUnderBranch = async (req, res) => {
+  try {
+    const { branch_id } = req.params;
+
+    // Validate branch_id if it should be an ObjectId
+    if (!mongoose.Types.ObjectId.isValid(branch_id)) {
+      return res.status(400).json({
+        message: "failed",
+        error: 'Invalid branch ID'
+      });
+    }
+
+    // Find all inventory branches under the given branch_id
+    const inventoryBranches = await InventoryBranch.find({ branch_id });
+
+    if (!inventoryBranches.length) {
+      return res.status(404).json({ message: 'No inventory branches found for this branch' });
+    }
+
+    // Fetch all inventory items for each inventory branch found
+    const items = await Inventory.find({
+      inventoryBranch: { $in: inventoryBranches.map(branch => branch._id) }
+    }).populate('inventoryBranch');
+
+    res.status(200).json({
+      message: "Items retrieved successfully",
+      data: items
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "failed",
+      error: error.message
+    });
+  }
+};
+
+
+
+// Delete an inventoryBranch and its associated inventory items
+exports.deleteInventoryBranch = async (req, res) => {
   try {
     const { inventoryBranch_id } = req.params;
 
-    const inventoryBranch = await InventoryBranch.findOneAndDelete({ inventoryBranch_id });
-    if (!inventoryBranch) {
-      return res.status(404).json({ message: 'inventoryBranch not found' });
+    // Validate inventoryBranch_id if it should be an ObjectId
+    if (!mongoose.Types.ObjectId.isValid(inventoryBranch_id)) {
+      return res.status(400).json({
+        message: "failed",
+        error: 'Invalid inventory branch ID'
+      });
     }
 
-    res.status(200).json({ message: 'inventoryBranch deleted successfully' });
+    // Find the inventory branch by its ID
+    const inventoryBranch = await InventoryBranch.findById(inventoryBranch_id);
+    if (!inventoryBranch) {
+      return res.status(404).json({ message: 'Inventory branch not found' });
+    }
+
+    // Delete all associated inventory items
+    await Inventory.deleteMany({ inventoryBranch: inventoryBranch._id });
+
+    // Delete the inventory branch
+    await InventoryBranch.findByIdAndDelete(inventoryBranch_id);
+
+    res.status(200).json({ message: 'Inventory branch and its associated inventory items deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Failed to delete inventory branch', error: error.message });
   }
 };
+
+
