@@ -59,10 +59,10 @@ yarn-error.log*
 
 # React specific
 /frontend/build/
-
+package-lock.json
 # Express specific
 /backend/dist/
-
+package-lock.json
 # Temporary files
 *.tmp
 *.temp
