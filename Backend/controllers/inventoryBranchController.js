@@ -88,7 +88,7 @@ exports.getItemsUnderBranch = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(branch_id)) {
       return res.status(400).json({
         message: "failed",
-        error: 'Invalid branch ID'
+        error: 'Invalid branch IDd'
       });
     }
 
