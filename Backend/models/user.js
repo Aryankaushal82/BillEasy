@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     user_email: { type: String, required: true, unique: true },
     user_password: { type: String, required: true, unique: true},
     admin_ref: { type: String, required: true,unique: true},
-    branch_id: { type: String,required:true, unique: true},
+    branch_id: { type: mongoose.Schema.Types.ObjectId,ref:'branch', required: true},
     user_fullname: { type: String,},
     user_designation: { type: String},
     user_role: { type: String },

@@ -5,10 +5,11 @@ const Inventory = require('../models/inventory');
 // Add a new inventoryBranch
 exports.addInventoryBranch = async (req, res) => {
   try {
-    const { inventoryBranch_id, inventoryBranch_type, location, branch_id } = req.body;
+    const { inventoryBranch_id, inventoryBranch_type, location } = req.body;
+    const {branch_id,_id} = req.user;
 
     // Validate required fields
-    if (!inventoryBranch_id || !inventoryBranch_type || !location || !branch_id) {
+    if (!inventoryBranch_id || !inventoryBranch_type || !location) {
       return res.status(400).json({
         message: "failed",
         error: "Please fill all required fields"
@@ -16,12 +17,12 @@ exports.addInventoryBranch = async (req, res) => {
     }
 
     // Validate branch_id if it should be an ObjectId
-    if (!mongoose.Types.ObjectId.isValid(branch_id)) {
-      return res.status(400).json({
-        message: "failed",
-        error: 'Invalid branch ID'
-      });
-    }
+    // if (!mongoose.Types.ObjectId.isValid(branch_id)) {
+    //   return res.status(400).json({
+    //     message: "failed",
+    //     error: 'Invalid branch ID'
+    //   });
+    // }
 
     // Check if inventory branch already exists with the given ID
     const branchExist = await InventoryBranch.findOne({ inventoryBranch_id });
@@ -46,7 +47,7 @@ exports.addInventoryBranch = async (req, res) => {
       inventoryBranch_id,
       inventoryBranch_type,
       location,
-      branch_id
+      branchUser:new mongoose.Types.ObjectId(_id)
     });
 
     await newInventoryBranch.save();
@@ -67,21 +68,21 @@ exports.addInventoryBranch = async (req, res) => {
 // Get all inventoryBranches under same branch
 exports.getInventoryBranches = async (req, res) => {
   try {
-    const { branch_id } = req.query;
+    const { _id } = req.user;
     let query = {};
 
     // Validate branch_id if it should be an ObjectId
-    if (branch_id) {
-      if (!mongoose.Types.ObjectId.isValid(branch_id)) {
-        return res.status(400).json({
-          message: "failed",
-          error: 'Invalid branch ID'
-        });
-      }
-      query.branch_id = branch_id;
-    }
+    // if (branch_id) {
+    //   if (!mongoose.Types.ObjectId.isValid(branch_id)) {
+    //     return res.status(400).json({
+    //       message: "failed",
+    //       error: 'Invalid branch ID'
+    //     });
+    //   }
+    // }
+    // query._id = _id;
 
-    const inventoryBranches = await InventoryBranch.find(query).populate('branch_id');
+    const inventoryBranches = await InventoryBranch.find({branchUser:_id});
     res.status(200).json({
       message: "Inventory branches retrieved successfully",
       data: inventoryBranches
@@ -118,7 +119,7 @@ exports.getItemsUnderBranch = async (req, res) => {
     // Fetch all inventory items for each inventory branch found
     const items = await Inventory.find({
       inventoryBranch: { $in: inventoryBranches.map(branch => branch._id) }
-    }).populate('inventoryBranch');
+    })
 
     res.status(200).json({
       message: "Items retrieved successfully",

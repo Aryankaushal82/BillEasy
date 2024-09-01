@@ -1,7 +1,7 @@
 const user = require("../models/user");
 const bcrypt = require("bcryptjs");
 const mail = require('../helper/sendMail')
-
+const mongoose = require('mongoose')
 
 
 
@@ -82,7 +82,7 @@ const register = async (req, res) => {
         user_email: user_email,
         user_password:encryptPassword,
         admin_ref:admin_ref,
-        branch_id:branch_id
+        branch_id:new mongoose.Types.ObjectId(branch_id),
       });
 
       const refreshToken = await generateRefreshToken(createUser._id);
@@ -148,9 +148,9 @@ const register = async (req, res) => {
         });
       }
       //data coming
-      const {user_email,user_password,branch_id}=inputData;
+      const {user_email,user_password}=inputData;
       //check if every entry is valid
-      if(!user_email || !user_password || !branch_id){
+      if(!user_email || !user_password ){
         return res.status(400).json({
           success: false,
           status: "400",
@@ -161,7 +161,7 @@ const register = async (req, res) => {
 
       //find user in db
       const checkData = await user.findOne({
-        $and:[{user_email},{branch_id}]
+        user_email
       });
       if (!checkData){
         return res.status(500).json({

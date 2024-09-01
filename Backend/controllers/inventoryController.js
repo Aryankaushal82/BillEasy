@@ -5,27 +5,22 @@ const InventoryBranch = require('../models/inventoryBranch');
 //Add a new Inventory item
 exports.addItem = async (req, res) => {
   try {
-    const { item_id, item_name, item_quantity, inventoryBranch_id } = req.body;
+    const { item_id, item_name, item_quantity,inventory_type } = req.body;
+    const {_id} = req.user;
 
     // Check if all required fields are provided
-    if (!item_id || !item_name || !item_quantity || !inventoryBranch_id) {
+    if (!item_id || !item_name || !item_quantity|| !inventory_type) {
       return res.status(400).json({
         message: "failed",
         error: "Please fill all required fields"
       });
     }
 
-    // Validate inventoryBranch_id
-    if (!mongoose.Types.ObjectId.isValid(inventoryBranch_id)) {
-      return res.status(400).json({
-        message: "failed",
-        error: "Invalid inventory branch ID"
-      });
-    }
-
     // Check if the inventory branch exists
-    const inventoryBranch = await InventoryBranch.findById(inventoryBranch_id);
-    if (!inventoryBranch) {
+    const inventory_ty = await InventoryBranch.findOne({
+      $and:[{branchUser:_id},{inventoryBranch_type:inventory_type}]
+    });
+    if (!inventory_ty) {
       return res.status(404).json({
         message: "failed",
         error: 'Inventory branch not found'
@@ -46,13 +41,13 @@ exports.addItem = async (req, res) => {
       item_id,
       item_name,
       item_quantity,
-      inventoryBranch: inventoryBranch._id
+      inventoryBranch: inventory_ty._id
     });
 
     // Save the new item
     await newItem.save();
 
-    res.status(201).json({
+    res.status(200).json({
       message: "Item added successfully",
       data: newItem
     });
