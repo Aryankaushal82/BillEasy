@@ -16,13 +16,6 @@ exports.addInventoryBranch = async (req, res) => {
       });
     }
 
-    // Validate branch_id if it should be an ObjectId
-    // if (!mongoose.Types.ObjectId.isValid(branch_id)) {
-    //   return res.status(400).json({
-    //     message: "failed",
-    //     error: 'Invalid branch ID'
-    //   });
-    // }
 
     // Check if inventory branch already exists with the given ID
     const branchExist = await InventoryBranch.findOne({ inventoryBranch_id });
@@ -71,16 +64,6 @@ exports.getInventoryBranches = async (req, res) => {
     const { _id } = req.user;
     let query = {};
 
-    // Validate branch_id if it should be an ObjectId
-    // if (branch_id) {
-    //   if (!mongoose.Types.ObjectId.isValid(branch_id)) {
-    //     return res.status(400).json({
-    //       message: "failed",
-    //       error: 'Invalid branch ID'
-    //     });
-    //   }
-    // }
-    // query._id = _id;
 
     const inventoryBranches = await InventoryBranch.find({branchUser:_id});
     res.status(200).json({
