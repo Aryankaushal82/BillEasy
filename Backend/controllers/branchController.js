@@ -1,6 +1,7 @@
 const Branch = require('../models/branch');
 const InventoryBranch = require('../models/inventoryBranch');
 const Inventory = require('../models/inventory');
+const mongoose = require('mongoose');
 
 // Create new branch
 exports.createBranch = async (req, res) => {
@@ -46,6 +47,7 @@ exports.getBranches = async (req, res) => {
   try {
     // Retrieve all branches from the database
     const branches = await Branch.find();
+    console.log(branches);
 
     // Check if no branches are found
     if (!branches.length) {
@@ -144,7 +146,7 @@ exports.updateBranch = async (req, res) => {
 // Shift specific or group of inventory items to another inventory branch's same inventoryBranch
 exports.shiftInventoryItems = async (req, res) => {
   try {
-    const { id } = req.params; // ID of the branch containing the inventoryBranch
+    const { id } = req.params; 
     const { item_ids, target_inventoryBranch_id } = req.body;
 
     // Validate input

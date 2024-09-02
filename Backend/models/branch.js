@@ -25,10 +25,10 @@ const branchSchema = new mongoose.Schema({
   branch_location: {
     type: String
   },
-  // admin: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'admin'
-  // },
+  admin: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'admin'
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Branch', branchSchema);

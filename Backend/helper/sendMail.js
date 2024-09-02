@@ -29,6 +29,7 @@ exports.SendGreetMail = async ({email,name,pno}) => {
     console.log(`Invoice Mail sent to ${email}`, info.messageId);
     return true;
   } catch (err) {
+    console.log("error in mail", err);
     console.error(`Failed to send email: ${err}`);
     throw err;
   }

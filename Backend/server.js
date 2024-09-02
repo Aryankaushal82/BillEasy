@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const PORT = 3000;
 
 // Middleware to parse JSON requests
 app.use(express.json());
 app.use(cookieParser())
+app.use(cors());
 
 
 // Database connection
@@ -28,7 +30,8 @@ const inventoryRoutes = require('./routes/inventoryRoutes');
 const inventoryBranchRoutes = require('./routes/inventoryBranchRoutes');
 const userRoutes = require('./routes/userRoutes');
 
-app.use('/admin', adminRoutes);
+
+// app.use('/admin', adminRoutes);
 app.use('/branch', branchRoutes);
 app.use('/inventory', inventoryRoutes);
 app.use('/inventorybranch', inventoryBranchRoutes);

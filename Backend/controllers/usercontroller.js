@@ -9,15 +9,22 @@ const generateRefreshToken =async (userId)=>{
   try {
     //find data
     //create refresh token
-    const banda = await user.findById(userId);
-    if (!banda) return res.status(400).json({success:false,messgae: "banda not found"});
-    const refreshToken = banda.generateRefreshToken();
+    // const banda = await user.findById(userId);
+    // console.log("banda", banda);
+    // if (!banda) return "banda not found";
+    const newUser = await user.findById(userId);
+    const refreshToken = newUser.generateRefreshToken();
+    console.log("refresh token generated", refreshToken);
+    newUser.user_refreshToken = refreshToken;
+    await newUser.save({validateBeforeSave: false});
+    console.log("refreshed user", userId);
     return refreshToken;
   } catch (error) {
-    return res.status(500).json({
-      success:false,
-      messgae: "error generating refresh token",error,
-    })
+    console.log("error generating refresh token", error);
+    // return res.status(500).json({
+    //   success:false,
+    //   messgae: "error generating refresh token",error,
+    // })
   }
 }
 const generateAccessToken =async (userId)=>{
@@ -29,16 +36,17 @@ const generateAccessToken =async (userId)=>{
     const accessToken = banda.generateAccessToken();
     return accessToken;
   } catch (error) {
-    return res.status(500).json({
-      success:false,
-      messgae: "error generating Access token",error,
-    })
+    // return res.status(500).json({
+    //   success:false,
+    //   messgae: "error generating Access token",error,
+    // })
   }
 }
 
 const register = async (req, res) => {
     try {
       const inputData = req.body;
+      console.log(inputData);
       if (!inputData) {
         return res.json({
           message: "failed",
@@ -46,20 +54,22 @@ const register = async (req, res) => {
           error: "please fill the form completely"
         });
       }
+      // console.log(inputData);
   
-      const {user_id,user_username,user_email,user_password,admin_ref,branch_id} = inputData;
+      const {user_username,user_email,user_password,admin_ref,branch_id} = inputData;
   
-      if (!user_id || !user_username || !user_email || !user_password || !admin_ref || !branch_id) {
+      if (!user_username || !user_email || !user_password || !admin_ref || !branch_id) {
         return res.json({
           message: "failed",
           status: "400",
           error: "please fill the missed columns"
         });
       }
+      // console.log(inputData);
   
       // Check if data already exists
       const userExist = await user.findOne({
-        $or: [{ user_username }, { user_email }, { user_id }]
+        $or: [{ user_username }, { user_email }]
       });
   
       if (userExist) {
@@ -69,33 +79,46 @@ const register = async (req, res) => {
           message: 'User already exists'
         });
       }
-  
       // Hashing password 
       const encryptPassword = await bcrypt.hash(user_password,10);
       if (!encryptPassword) {
         return res.json({sucess: false,message:"dikkat aari hai"});
       }
+    
   
-      const createUser = await user.create({
-        user_id: user_id,
+      const createUser = new user({
         user_username: user_username,
         user_email: user_email,
         user_password:encryptPassword,
         admin_ref:admin_ref,
         branch_id:new mongoose.Types.ObjectId(branch_id),
       });
-
+      await createUser.save();
+      
       const refreshToken = await generateRefreshToken(createUser._id);
+      console.log(refreshToken,"refreshToken");
+      // console.log("null values",await user.find());
+      // await createUser.save();
+
       if (!refreshToken){
-        response.status(500).json({
+        res.status(500).json({
             sucess: false,
             message: "internal server error while creating refresh token"
         })
       }
-      console.log(refreshToken);
       //token aagya
-      createUser.user_refreshToken = refreshToken;
-      await createUser.save({validateBeforeSave: false});
+      const finalData  = await user.findByIdAndUpdate(
+        createUser._id,
+        {
+          $set: {
+              user_refreshToken: refreshToken 
+          }
+      },
+      {
+          new: true
+      }
+      )
+      console.log(finalData,"finalData");
   
       // Send email
       await mail.SendGreetMail({
@@ -107,12 +130,13 @@ const register = async (req, res) => {
       const registerUser = await user.findById(createUser._id).select("-user_password -user_refreshToken");
   
       return res.json({
-        message: "success",
+        success:"true",
         status: 200,
         data: registerUser,
         msg: `Hey ${registerUser.user_username}, you have registered successfully`
       });
     } catch (err) {
+      console.log("Error in ref", err);
       res.status(500).send("Error occurred while registering the user: " + err);
     }
   }
@@ -188,7 +212,7 @@ const register = async (req, res) => {
       // console.log(accessToken);
       const finalUser = await user.findById(checkData._id).select("-user_password -user_refreshToken");
 
-      // console.log(finalUser);
+      console.log(finalUser);
       
       const options = {
         httpOnly: true,
@@ -299,3 +323,4 @@ const register = async (req, res) => {
   
 
   module.exports= {register,loginUser,logoutUser,updateUserDetails};
+
