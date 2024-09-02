@@ -17,25 +17,25 @@ import ComplexTable from "./components/ComplexTable";
 const Tables = () => {
   return (
     <div>
-      <div className="mt-5 grid h-full grid-cols-1 gap-5 md:grid-cols-2">
+      <div className="mt-5">
       <ComplexTable
           columnsData={columnsDataComplex}
           tableData={tableDataComplex}
-        />
-      <ComplexTable
-          columnsData={columnsDataComplex}
-          tableData={tableDataComplex}
-        />
-      </div>
+      //   />
+      // <ComplexTable
+      //     columnsData={columnsDataComplex}
+      //     tableData={tableDataComplex}
+      //   />
+      // </div>
 
-      <div className="mt-5 grid h-full grid-cols-1 gap-5 md:grid-cols-2">
-        <ComplexTable
-          columnsData={columnsDataComplex}
-          tableData={tableDataComplex}
-        />
-        <ComplexTable
-          columnsData={columnsDataComplex}
-          tableData={tableDataComplex}
+      // <div className="mt-5 grid h-full grid-cols-1 gap-5 md:grid-cols-2">
+      //   <ComplexTable
+      //     columnsData={columnsDataComplex}
+      //     tableData={tableDataComplex}
+      //   />
+      //   <ComplexTable
+      //     columnsData={columnsDataComplex}
+      //     tableData={tableDataComplex}
         />
       </div>
     </div>

@@ -10,7 +10,7 @@ function HeroPage() {
     return (
         <>
             <div
-                className="bg-cover bg-center h-auto pb-20"
+                className="bg-cover bg-center h-auto pb-20 "
                 style={{ backgroundImage: `url(${bgimg})` }}
             >
 

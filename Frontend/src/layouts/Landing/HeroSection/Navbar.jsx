@@ -24,15 +24,15 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`p-4 w-full z-50 transition-all duration-500 ease-in-out ${
+      className={`p-4 w-full z-50 transition-all duration-500 ease-in-out overflow-x-hidden animate-fade-down ${
         navbarFixed
           ? "fixed top-0 bg-white text-black shadow-lg"
           : "absolute top-2 bg-transparent text-white"
       }`}
     >
-      <div className="container mx-auto flex items-center">
+      <div className="container mx-auto flex items-center animate-fade-down">
         {/* Left Side: Logo with conditional invert filter */}
-        <div className="flex items-center flex-grow w-32">
+        <div className="flex items-center flex-grow w-32 animate-slide-right-l">
           <img
             src={logo}
             alt="Logo"
@@ -67,7 +67,7 @@ const Navbar = () => {
         </ul>
 
         {/* Right Side: Sign In Button */}
-        <div className="flex items-center flex-grow justify-end">
+        <div className="flex items-center flex-grow justify-end animate-slide-left-l">
           <Link
             to={'auth/sign-up'}
             className="bg-blue-700 mix-blend-multiply text-white py-2 px-4 rounded-3xl transform hover:bg-blue-500 transition duration-300"

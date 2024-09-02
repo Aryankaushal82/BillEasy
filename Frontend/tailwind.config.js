@@ -17,8 +17,36 @@ module.exports = {
           '0%': { opacity: '0.4' },
           '100%': { opacity: '1' },
         },
+        'T-slide-up': {
+          '0%': { transform: 'translateY(150px)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+        'T-slide-down': {
+          '0%': { transform: 'translateY(-150px)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+        'T-slide-right': {
+          '0%': { transform: 'translateX(-150px)' },
+          '100%': {  transform: 'translateX(0)' },
+        },
+        'T-slide-left': {
+          '0%': { transform: 'translateX(150px)' },
+          '100%': {  transform: 'translateX(0)' },
+        },
         'fade-up': {
           '0%': { opacity: 0, transform: 'translateY(20px)' },
+          '100%': { opacity: 1, transform: 'translateY(0)' },
+        },
+        'fade-right': {
+          '0%': { opacity: 0, transform: 'translateX(-20px)' },
+          '100%': { opacity: 1, transform: 'translateX(0)' },
+        },
+        'fade-left': {
+          '0%': { opacity: 0, transform: 'translateX(20px)' },
+          '100%': { opacity: 1, transform: 'translateX(0)' },
+        },
+        'fade-down': {
+          '0%': { opacity: 0, transform: 'translateY(-20px)' },
           '100%': { opacity: 1, transform: 'translateY(0)' },
         },
         'pop-up': {
@@ -29,8 +57,17 @@ module.exports = {
       animation: {
         'slide-right': 'slide-right 1s forwards',
         'slide-left': 'slide-left 1s forwards',
+        'slide-right-l': 'slide-right 1.5s forwards',
+        'slide-left-l': 'slide-left 1.5s forwards',
+        'T-slide-up': 'T-slide-up 2s forwards',
+        'T-slide-down': 'T-slide-down 2s forwards',
+        'T-slide-left': 'T-slide-left 2s forwards',
+        'T-slide-right': 'T-slide-right 2s forwards',
         'fade': 'fade 1s ease-in-out',
-        'fade-up': 'fade-up 1.5s ease-out',
+        'fade-up': 'fade-up 2s ease-out',
+        'fade-right': 'fade-right 1s ease-out',
+        'fade-left': 'fade-left 1s ease-out',
+        'fade-down': 'fade-down 1.5s ease-out',
         'pop-up': 'pop-up 0.5s ease-out',
       },
       
