@@ -156,7 +156,6 @@ import * as z from "zod";
 import InputField from "components/fields/InputField";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Navigate } from "react-router-dom"; 
 
 // Zod schemas for user and admin
 const userSchema = z.object({
@@ -164,7 +163,13 @@ const userSchema = z.object({
   user_email: z.string().email("Invalid email address"),
   user_password: z.string().min(8, "Password must be at least 8 characters"),
   admin_ref: z.string().min(1, "Admin Reference is required"),
-  branch_id: z.string().min(1, "Branch ID is required"),
+  branch_id: z.union([
+    z.string().length(24, "Branch ID must be a 24-character hex string"),
+    z.instanceof(Uint8Array).refine((arr) => arr.length === 12, {
+      message: "Branch ID must be a 12-byte Uint8Array",
+    }),
+    z.number().int("Branch ID must be an integer"),
+  ]),
 });
 
 const adminSchema = z.object({
@@ -175,41 +180,47 @@ const adminSchema = z.object({
 
 export default function SignUp() {
   const [userType, setUserType] = useState("user");
-  const Navigate = useNavigate();
-  const userForm = useForm();
+  const navigate = useNavigate();
 
-  const adminForm = useForm();
+  const userForm = useForm({
+    resolver: zodResolver(userSchema),
+  });
+
+  const adminForm = useForm({
+    resolver: zodResolver(adminSchema),
+  });
 
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
 
   const handleSignUpForUser = async (data) => {
-    console.log("hello")
-    // console.log(data);
     try {
-      const inputReq = await axios.post("http://localhost:3000/user/register",data);
-      console.log(inputReq.data);
-      if (inputReq.data.success){
-      Navigate('/admin');
+      const response = await axios.post("http://localhost:3000/user/register", data);
+      console.log(response.data);
+      if (response.data.success) {
+        navigate('/admin');
+      } else {
+        alert(response.data.message);
       }
-      else{
-        alert(inputReq.data.message);
-      }  
     } catch (error) {
       alert(error.message);
     }
   };
-  const handleSignUpForAdmin = (data) => {
-    console.log("hello")
-    console.log(data);
-    axios.post()
-  };
 
-  // const userSignup = (data) => {
-  //   console.log("hello")
-  //   console.log(data);
-  // }
+  const handleSignUpForAdmin = async (data) => {
+    try {
+      const response = await axios.post("http://localhost:3000/admin/register", data);
+      console.log(response.data);
+      if (response.data.success) {
+        navigate('/admin/dashboard');
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   return (
     <div className="mt-6 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
@@ -237,27 +248,52 @@ export default function SignUp() {
               placeholder="Enter your username"
               {...userForm.register("user_username")}
             />
+            {userForm.formState.errors.user_username && (
+              <p className="text-red-500 text-sm">
+                {userForm.formState.errors.user_username.message}
+              </p>
+            )}
             <InputField
               label="Email"
               placeholder="Enter your email"
               {...userForm.register("user_email")}
             />
+            {userForm.formState.errors.user_email && (
+              <p className="text-red-500 text-sm">
+                {userForm.formState.errors.user_email.message}
+              </p>
+            )}
             <InputField
               label="Password"
               placeholder="Enter your password"
               type="password"
               {...userForm.register("user_password")}
             />
+            {userForm.formState.errors.user_password && (
+              <p className="text-red-500 text-sm">
+                {userForm.formState.errors.user_password.message}
+              </p>
+            )}
             <InputField
               label="Admin Reference"
               placeholder="Enter admin reference"
               {...userForm.register("admin_ref")}
             />
+            {userForm.formState.errors.admin_ref && (
+              <p className="text-red-500 text-sm">
+                {userForm.formState.errors.admin_ref.message}
+              </p>
+            )}
             <InputField
               label="Branch ID"
               placeholder="Enter branch ID"
               {...userForm.register("branch_id")}
             />
+            {userForm.formState.errors.branch_id && (
+              <p className="text-red-500 text-sm">
+                {userForm.formState.errors.branch_id.message}
+              </p>
+            )}
             <button
               type="submit"
               className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
@@ -268,23 +304,37 @@ export default function SignUp() {
         ) : (
           <form onSubmit={adminForm.handleSubmit(handleSignUpForAdmin)}>
             <InputField
-              label="Username*"
+              label="Username"
               placeholder="Enter your username"
               {...adminForm.register("user_name")}
             />
+            {adminForm.formState.errors.user_name && (
+              <p className="text-red-500 text-sm">
+                {adminForm.formState.errors.user_name.message}
+              </p>
+            )}
             <InputField
-              label="Email*"
+              label="Email"
               placeholder="Enter your email"
               {...adminForm.register("admin_email")}
             />
+            {adminForm.formState.errors.admin_email && (
+              <p className="text-red-500 text-sm">
+                {adminForm.formState.errors.admin_email.message}
+              </p>
+            )}
             <InputField
-              label="Password*"
+              label="Password"
               placeholder="Enter your password"
               type="password"
               {...adminForm.register("admin_password")}
             />
+            {adminForm.formState.errors.admin_password && (
+              <p className="text-red-500 text-sm">
+                {adminForm.formState.errors.admin_password.message}
+              </p>
+            )}
             <button
-              // onClick={() => {console.log("clicked admin button")}}
               type="submit"
               className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
             >
@@ -308,3 +358,4 @@ export default function SignUp() {
     </div>
   );
 }
+

@@ -75,17 +75,22 @@ import axios from "axios";
 
 // Zod schema for Sign In
 const signInSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  user_email: z.string().email("Invalid email address").optional(),
+  user_password: z.string().min(8, "Password must be at least 8 characters").optional(),
+  admin_email: z.string().email("Invalid email address").optional(),
+  admin_password: z.string().min(8, "Password must be at least 8 characters").optional(),
 });
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [role, setRole] = useState("user");
 
-  // Form handling with React Hook Form and Zod
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: zodResolver(signInSchema),
+  const userForm = useForm({
+    resolver: zodResolver(signInSchema.pick({ user_email: true, user_password: true })),
+  });
+
+  const adminForm = useForm({
+    resolver: zodResolver(signInSchema.pick({ admin_email: true, admin_password: true })),
   });
 
   // Handle role change
@@ -93,21 +98,31 @@ export default function SignIn() {
     setRole(event.target.value);
   };
 
-  // Handle form submission
-  const onSubmit = async (data) => {
+  // Handle form submission for User
+  const handleSignInForUser = async (data) => {
     try {
-      const response = await axios.post("http://localhost:3000/user/sign-in", {
-        ...data,
-        role,  // Include the role in the login request
-      });
+      const response = await axios.post("http://localhost:3000/user/sign-in", data);
       if (response.data.success) {
-        navigate('/admin');
+        navigate("/admin");
       } else {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error("Login failed", error);
-      alert("An error occurred. Please try again.");
+      alert(error.message);
+    }
+  };
+
+  // Handle form submission for Admin
+  const handleSignInForAdmin = async (data) => {
+    try {
+      const response = await axios.post("http://localhost:3000/admin/sign-in", data);
+      if (response.data.success) {
+        navigate("/admin-dashboard");
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      alert(error.message);
     }
   };
 
@@ -116,13 +131,9 @@ export default function SignIn() {
       {/* Sign In Section */}
       <div className="mt-[10vh] w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
         <h4 className="mb-2.5 text-4xl font-bold text-navy-700 dark:text-white">
-          Sign In
+          {role === "user" ? "User Sign In" : "Admin Sign In"}
         </h4>
-        <p className="mb-9 ml-1 text-base text-gray-600">
-          Enter your email and password to sign in!
-        </p>
 
-        {/* Role Selection */}
         <label className="mb-2 block text-base font-medium text-gray-700">
           Sign in as:
           <select
@@ -135,64 +146,69 @@ export default function SignIn() {
           </select>
         </label>
 
-        {/* Sign In Form */}
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {/* Email */}
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="Email*"
-            placeholder="mail@simmmple.com"
-            id="email"
-            type="text"
-            {...register("email")}
-            error={errors.email?.message}
-          />
-
-          {/* Password */}
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="Password*"
-            placeholder="Min. 8 characters"
-            id="password"
-            type="password"
-            {...register("password")}
-            error={errors.password?.message}
-          />
-
-          {/* Forgot Password */}
-          <div className="mb-4 flex items-center justify-between px-2">
-            <a
-              className="text-sm font-medium text-brand-500 hover:text-brand-600 dark:text-white"
-              href=" "
+        {role === "user" ? (
+          <form onSubmit={userForm.handleSubmit(handleSignInForUser)}>
+            <InputField
+              label="Email"
+              placeholder="Enter your email"
+              {...userForm.register("user_email")}
+              error={userForm.formState.errors.user_email?.message}
+            />
+            <InputField
+              label="Password"
+              placeholder="Enter your password"
+              type="password"
+              {...userForm.register("user_password")}
+              error={userForm.formState.errors.user_password?.message}
+            />
+            <button
+              type="submit"
+              className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
             >
-              Forgot Password?
-            </a>
-          </div>
+              Sign In
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={adminForm.handleSubmit(handleSignInForAdmin)}>
+            <InputField
+              label="Email*"
+              placeholder="Enter your email"
+              {...adminForm.register("admin_email")}
+              error={adminForm.formState.errors.admin_email?.message}
+            />
+            <InputField
+              label="Password*"
+              placeholder="Enter your password"
+              type="password"
+              {...adminForm.register("admin_password")}
+              error={adminForm.formState.errors.admin_password?.message}
+            />
+            <button
+              type="submit"
+              className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
+            >
+              Sign In
+            </button>
+          </form>
+        )}
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
-          >
-            Sign In
-          </button>
-        </form>
-
-        {/* Sign Up Link */}
         <div className="mt-4">
           <span className="text-sm font-medium text-navy-700 dark:text-gray-600">
-            Not registered yet?
+            Already have an account?
           </span>
           <Link
-            to="/auth/sign-up"
+            to={"/auth/sign-up"}
             className="ml-1 text-sm font-medium text-brand-500 hover:text-brand-600 dark:text-white"
           >
-            Create an account
+            Sign Up
           </Link>
         </div>
       </div>
     </div>
   );
 }
+
+
+
+
+
