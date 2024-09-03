@@ -1,7 +1,7 @@
 import Auth from "layouts/auth";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../../assets/whitelogo.png";
+// import logo from "../../../assets/whitelogo.png";
 
 const Navbar = () => {
   const [navbarFixed, setNavbarFixed] = useState(false);
@@ -34,9 +34,9 @@ const Navbar = () => {
         {/* Left Side: Logo with conditional invert filter */}
         <div className="flex items-center flex-grow w-32 animate-slide-right-l">
           <img
-            src={logo}
+            src="https://res.cloudinary.com/ddwxpd7yp/image/upload/v1725320759/whitelogo_gk9qyv.svg"
             alt="Logo"
-            className={`h-7 w-48 transition duration-500 ${
+            className={`w-80 -ml-20 transition duration-500 ${
               navbarFixed ? "invert" : ""
             }`}
           />

@@ -1,8 +1,7 @@
 import React from 'react';
-import microsoftimg from "../../../assets/Microsoft.png";
-// import appleimg from "../../../assets/apple.png";
-import unityimg from "../../../assets/unity.png";
-import ximg from "../../../assets/twitter.png";
+// import microsoftimg from "../../../assets/Microsoft.png";
+// import unityimg from "../../../assets/unity.png";
+// import ximg from "../../../assets/twitter.png";
 
 const Join = () => {
 
@@ -14,32 +13,32 @@ const Join = () => {
 
       {/* Icons */}
       <div className="flex justify-center space-x-14 mb-8">
-        <img src={microsoftimg} alt="Icon 1" className="h-12 w-12 invert" />
+        <img src="https://res.cloudinary.com/ddwxpd7yp/image/upload/v1725321304/Microsoft_i6bjkb.png" alt="Icon 1" className="h-12 w-12 invert" />
         {/* <img src={appleimg} alt="Icon 2" className="h-12 w-12 invert" /> */}
-        <img src={unityimg} alt="Icon 3" className="h-12 w-12 invert" />
-        <img src={ximg} alt="Icon 4" className="h-12 w-12 invert" />
+        <img src="https://res.cloudinary.com/ddwxpd7yp/image/upload/v1725321371/unity_xtpcuy.png" alt="Icon 3" className="h-12 w-12 invert" />
+        <img src="https://res.cloudinary.com/ddwxpd7yp/image/upload/v1725321419/twitter_hg4vmm.png" alt="Icon 4" className="h-12 w-12 invert" />
       </div>
 
       {/* Overlapping Profile Images and Review */}
       <div className="flex justify-center items-center space-x-4">
         <div className="flex -space-x-4">
           <img
-            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cHJvZmVzc2lvbmFsJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
+            src="https://res.cloudinary.com/ddwxpd7yp/image/upload/v1725360629/redgirl_qr7ty5.avif"
             alt="Profile 1"
             className="h-12 w-12 rounded-full border-2 border-white"
           />
           <img
-            src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHByb2Zlc3Npb25hbCUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D"
+            src="https://res.cloudinary.com/ddwxpd7yp/image/upload/v1725360908/1_agmbvj.avif"
             alt="Profile 2"
             className="h-12 w-12 rounded-full border-2 border-white"
           />
           <img
-            src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjl8fHByb2Zlc3Npb25hbCUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D"
+            src="https://res.cloudinary.com/ddwxpd7yp/image/upload/v1725361014/2_qtmw4o.avif"
             alt="Profile 3"
             className="h-12 w-12 rounded-full border-2 border-white"
           />
           <img
-            src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzZ8fHByb2Zlc3Npb25hbCUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D"
+            src="https://res.cloudinary.com/ddwxpd7yp/image/upload/v1725361079/3_swxbag.avif"
             alt="Profile 4"
             className="h-12 w-12 rounded-full border-2 border-white"
           />
