@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: express-app
+  template:
+    metadata:
+      labels:
+        app: express-app
+    spec:
+      containers:
+        - name: express-app
+          image: "to be added"
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-atlas-secret
+                  key: uri
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: express-app-service
+spec:
+  selector:
+    app: express-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb-atlas-secret
+type: Opaque
+stringData:
+  uri: mongodb+srv://username:password@your-cluster.mongodb.net/your-database?retryWrites=true&w=majority
