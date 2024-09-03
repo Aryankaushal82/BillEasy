@@ -101,7 +101,11 @@ export default function SignIn() {
   // Handle form submission for User
   const handleSignInForUser = async (data) => {
     try {
-      const response = await axios.post("http://localhost:3000/user/sign-in", data);
+      const response = await axios.post("http://localhost:3000/user/sign-in", data,
+        {
+          withCredentials: true, // Required to include cookies in requests
+        }
+      );
       if (response.data.success) {
         navigate("/admin");
       } else {

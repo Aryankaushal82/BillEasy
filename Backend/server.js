@@ -7,7 +7,8 @@ const PORT = 3000;
 // Middleware to parse JSON requests
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors());
+app.use(cors({origin: 'http://localhost:3001', // Replace with your frontend port
+    credentials: true,}));
 
 
 // Database connection
@@ -29,6 +30,7 @@ const branchRoutes = require('./routes/branchRoutes');
 const inventoryRoutes = require('./routes/inventoryRoutes');
 const inventoryBranchRoutes = require('./routes/inventoryBranchRoutes');
 const userRoutes = require('./routes/userRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 
 // app.use('/admin', adminRoutes);
@@ -36,6 +38,7 @@ app.use('/branch', branchRoutes);
 app.use('/inventory', inventoryRoutes);
 app.use('/inventorybranch', inventoryBranchRoutes);
 app.use('/user', userRoutes);
+app.use('/order',orderRoutes);
 
 // Start the server
 app.listen(PORT, () => {
