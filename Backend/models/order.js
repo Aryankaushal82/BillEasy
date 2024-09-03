@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-    branch_id: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    branch_id: { type: mongoose.Schema.Types.ObjectId, ref: 'branch' },
     order_id: { type: String, unique: true },
     product_name: { type: String, required: true },
     product_quantity: { type: Number, required: true },
