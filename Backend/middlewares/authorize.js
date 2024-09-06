@@ -9,8 +9,8 @@ const verifyJwt = async (req,res,next)=>{
         //access ko decode karo verify kro
         //db se user find karlo 
         //res mai update krdo
-        // console.log("cookies: " + JSON.stringify(req.cookies));
-        //console.log("cookies2: " + JSON.stringify(req.header("Authorization")));
+        // console.log("hello i am here feat middleware");
+        // console.log("object",req.cookies)
         const accesstoken = req.cookies?.accessToken;
         // console.log("access token: " + accesstoken);
         if (!accesstoken){
@@ -18,6 +18,7 @@ const verifyJwt = async (req,res,next)=>{
             const refreshtoken = req.cookies?.refreshToken;
             console.log(refreshtoken);
             if (!refreshtoken){
+                console.log("hello 403")
                 return res.status(403).json({
                     success: false,
                     status:403,

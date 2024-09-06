@@ -18,7 +18,7 @@ export const columnsDataDevelopment = [
 ];
 
 export const columnsDataCheck = [
-  
+
   {
     Header: "PRODUCT ID",
     accessor: "product_id",
@@ -35,6 +35,10 @@ export const columnsDataCheck = [
     Header: "STOCK",
     accessor: "stock",
   },
+  {
+    Header: "INVENTORY_TYPE",
+    accessor: "inventory_type",
+  }
 ];
 
 export const columnsDataColumns = [

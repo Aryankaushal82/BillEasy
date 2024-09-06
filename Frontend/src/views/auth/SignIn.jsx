@@ -85,6 +85,7 @@ export default function SignIn() {
   const navigate = useNavigate();
   const [role, setRole] = useState("user");
 
+
   const userForm = useForm({
     resolver: zodResolver(signInSchema.pick({ user_email: true, user_password: true })),
   });
@@ -108,11 +109,10 @@ export default function SignIn() {
       );
       if (response.data.success) {
         navigate("/admin");
-      } else {
-        alert(response.data.message);
       }
     } catch (error) {
-      alert(error.message);
+      // alert(error.message);
+      alert(error.response.data.error);
     }
   };
 
@@ -122,13 +122,13 @@ export default function SignIn() {
       const response = await axios.post("http://localhost:3000/admin/sign-in", data);
       if (response.data.success) {
         navigate("/admin-dashboard");
-      } else {
-        alert(response.data.message);
-      }
+      } 
     } catch (error) {
-      alert(error.message);
+      // alert(error.message);
+      alert(error.response.data.error);
     }
   };
+  // const props = {label : "admin"}
 
   return (
     <div className="-mt-12 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">

@@ -199,9 +199,10 @@ export default function SignUp() {
       const response = await axios.post("http://localhost:3000/user/register", data);
       console.log(response.data);
       if (response.data.success) {
-        navigate('/admin');
+        navigate('/auth/sign-in');
       } else {
         alert(response.data.message);
+        navigate('/auth/sign-in');
       }
     } catch (error) {
       alert(error.message);

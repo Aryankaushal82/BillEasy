@@ -1,4 +1,3 @@
-import Checkbox from 'components/checkbox';
 import React from 'react';
 import CardMenu from "components/card/CardMenu";
 import Card from "components/card";
@@ -24,11 +23,6 @@ function Table(props) {
       ),
       cell: (info) => (
         <div className="flex items-center">
-          <Checkbox
-            defaultChecked={info.getValue()[1]}
-            colorScheme="brandScheme"
-            me="10px"
-          />
           <p className="ml-3 text-sm font-bold text-navy-700 dark:text-white">
             {info.getValue()}
           </p>
@@ -65,6 +59,17 @@ function Table(props) {
       id: "stock",
       header: () => (
         <p className="text-sm font-bold text-gray-600 dark:text-white">STOCK</p>
+      ),
+      cell: (info) => (
+        <p className="text-sm font-bold text-navy-700 dark:text-white">
+          {info.getValue()}
+        </p>
+      ),
+    }),
+    columnHelper.accessor("inventory_type", {
+      id: "inventory_type",
+      header: () => (
+        <p className="text-sm font-bold text-gray-600 dark:text-white">INVENTORY_TYPE</p>
       ),
       cell: (info) => (
         <p className="text-sm font-bold text-navy-700 dark:text-white">
@@ -127,7 +132,7 @@ function Table(props) {
           <tbody>
             {table
               .getRowModel()
-              .rows.map((row) => { 
+              .rows.map((row) => {
                 return (
                   <tr key={row.id}>
                     {row.getVisibleCells().map((cell) => {
@@ -150,7 +155,7 @@ function Table(props) {
         </table>
       </div>
     </Card>
-  );     
+  );
 }
 
 export default Table;

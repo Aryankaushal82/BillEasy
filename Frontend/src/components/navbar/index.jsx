@@ -1,7 +1,7 @@
 import React from "react";
 import Dropdown from "components/dropdown";
 import { FiAlignJustify } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import navbarimage from "assets/img/layout/Navbar.png";
 import { BsArrowBarUp } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
@@ -10,11 +10,31 @@ import {
   IoMdNotificationsOutline,
   IoMdInformationCircleOutline,
 } from "react-icons/io";
-import avatar from "assets/img/avatars/avatar4.png";
+import avatar from "assets/img/avatars/avatar4.png"; 
+import axios from "axios";
+
+
 
 const Navbar = (props) => {
-  const { onOpenSidenav, brandText } = props;
+  const { onOpenSidenav, brandText,userInf } = props;
+  const navigate = useNavigate();
   const [darkmode, setDarkmode] = React.useState(false);
+  const handleLogout =async ()=>{
+    try {
+      console.log("want to log out");
+      const response = await axios.get('http://localhost:3000/user/logout',{
+        withCredentials: true,
+      });
+      // console.log(response);
+      if (response.data.success){
+        alert("user logged out Successfully");
+        // onclose();
+        navigate("/");
+      }
+    } catch (error) {
+      alert("error while logout:",error.message);
+    }
+  }
 
   return (
     <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
@@ -114,7 +134,6 @@ const Navbar = (props) => {
           }
           classNames={"py-2 top-4 -left-[230px] md:-left-[440px] w-max"}
         />
-        {/* start Horizon PRO */}
         <Dropdown
           button={
             <p className="cursor-pointer">
@@ -160,26 +179,26 @@ const Navbar = (props) => {
               <div className="p-4">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-bold text-navy-700 dark:text-white">
-                    👋 Hey, John
+                    {userInf.user_username}
                   </p>{" "}
                 </div>
               </div>
               <div className="h-px w-full bg-gray-200 dark:bg-white/20 " />
 
               <div className="flex flex-col p-4">
-                <a
+                <Link to={'/admin/profile'}
                   href=" "
                   className="text-sm text-gray-800 dark:text-white hover:dark:text-white"
                 >
                   Profile Settings
-                </a>
+                </Link>
                 
-                <Link to={"/auth/sign-in"}
-                  href=" "
+                <button
+                  onClick={handleLogout}
                   className="mt-3 text-sm font-medium text-red-500 hover:text-red-500 transition duration-150 ease-out hover:ease-in"
                 >
                   Log Out
-                </Link>
+                </button>
               </div>
             </div>
           }

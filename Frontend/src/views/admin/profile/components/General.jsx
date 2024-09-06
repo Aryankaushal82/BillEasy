@@ -1,8 +1,10 @@
 import React from "react";
 import { MdModeEditOutline } from "react-icons/md";
 import Card from "components/card";
+import { useUser } from "useContext/userContext";
 
 const General = () => {
+  const userInfo = useUser();
   return (
     <Card extra={"w-full p-4 h-full"}>
       <div className="mb-8 w-full">
@@ -18,7 +20,7 @@ const General = () => {
         <div className="flex items-center">
           <div className="ml-4">
             <p className="text-base font-medium text-navy-700 dark:text-white">
-              Full Name: John Doe
+              Full Name: {userInfo.user_fullname}
             </p>
             <p className="mt-2 text-sm text-gray-600">
               Full legal name of the user.
@@ -34,7 +36,7 @@ const General = () => {
         <div className="flex items-center">
           <div className="ml-4">
             <p className="text-base font-medium text-navy-700 dark:text-white">
-              Email: johndoe@example.com
+              Email: {userInfo.user_email}
             </p>
             <p className="mt-2 text-sm text-gray-600">
               User's primary email address.
@@ -50,7 +52,7 @@ const General = () => {
         <div className="flex items-center">
           <div className="ml-4">
             <p className="text-base font-medium text-navy-700 dark:text-white">
-              Mobile Number: +91 9876543210
+              Mobile Number: {userInfo.user_phone_number}
             </p>
             <p className="mt-2 text-sm text-gray-600">
               User's primary contact number.
@@ -66,7 +68,7 @@ const General = () => {
         <div className="flex items-center">
           <div className="ml-4">
             <p className="text-base font-medium text-navy-700 dark:text-white">
-              Company Name: XYZ Pvt Ltd
+              Company Name: {userInfo.user_company_name}
             </p>
             <p className="mt-2 text-sm text-gray-600">
               The company the user is associated with.
@@ -78,7 +80,7 @@ const General = () => {
         </div>
       </div>
       {/* PAN Number */}
-      <div className="mt-3 flex w-full items-center justify-between rounded-2xl bg-white p-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+      {/* <div className="mt-3 flex w-full items-center justify-between rounded-2xl bg-white p-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
         <div className="flex items-center">
           <div className="ml-4">
             <p className="text-base font-medium text-navy-700 dark:text-white">
@@ -92,9 +94,9 @@ const General = () => {
         <div className="mr-4 flex items-center justify-center text-gray-600 dark:text-white">
           <MdModeEditOutline />
         </div>
-      </div>
+      </div> */}
       {/* GST Number */}
-      <div className="mt-3 flex w-full items-center justify-between rounded-2xl bg-white p-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+      {/* <div className="mt-3 flex w-full items-center justify-between rounded-2xl bg-white p-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
         <div className="flex items-center">
           <div className="ml-4">
             <p className="text-base font-medium text-navy-700 dark:text-white">
@@ -108,13 +110,13 @@ const General = () => {
         <div className="mr-4 flex items-center justify-center text-gray-600 dark:text-white">
           <MdModeEditOutline />
         </div>
-      </div>
+      </div> */}
       {/* Company ID */}
       <div className="mt-3 flex w-full items-center justify-between rounded-2xl bg-white p-3 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
         <div className="flex items-center">
           <div className="ml-4">
             <p className="text-base font-medium text-navy-700 dark:text-white">
-              Company ID: COMP12345
+              Company ID: {userInfo.user_username}
             </p>
             <p className="mt-2 text-sm text-gray-600">
               Unique ID assigned to the user's company.

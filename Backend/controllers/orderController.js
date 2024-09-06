@@ -49,7 +49,7 @@ const placeorder = async (req, res) => {
     const acceptUrl = `${baseUrl}/order/accept/${createOrder._id}/${acceptToken}`;
     const rejectUrl = `${baseUrl}/order/reject/${createOrder._id}/${rejectToken}`;
 
-    const recipientEmail = "amansharma11753@gmail.com";
+    const recipientEmail = "aryan1382.be22@chitkara.edu.in";
     const mailContent = `
             <div style="width:94%; padding:3%; padding-top:0.6%; background: linear-gradient(to right, #050321, #000000);">
                 <h1 style="font-size: 70px; color: #ffffff; text-align:center ">Profitex</h1>
@@ -95,6 +95,7 @@ const placeorder = async (req, res) => {
 // Get All Orders
 const getOrder = async (req, res) => {
   try {
+    console.log("reqrest", req.user);
     const {branch_id} = req.user;
     const getData = await order.find({branch_id:branch_id});
     res.json({

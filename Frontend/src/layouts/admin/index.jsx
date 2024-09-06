@@ -1,22 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
 import routes from "routes.js";
+import axios from "axios";
+import { UserProvider } from "../../useContext/userContext"; // Import the UserProvider
 
 export default function Admin(props) {
   const { ...rest } = props;
   const location = useLocation();
-  const [open, setOpen] = React.useState(true);
-  const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");
+  const [open, setOpen] = useState(true);
+  const [userInfo, setUserInfo] = useState({});
+  const [currentRoute, setCurrentRoute] = useState("Main Dashboard");
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener("resize", () =>
       window.innerWidth < 1200 ? setOpen(false) : setOpen(true)
     );
+    const getUserData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/user/get-details",
+          { withCredentials: true }
+        );
+        const data = response.data.data;
+        setUserInfo(data);
+      } catch (error) {
+        console.error("Failed to fetch user data", error);
+      }
+    };
+    getUserData();
   }, []);
-  React.useEffect(() => {
+
+  useEffect(() => {
     getActiveRoute(routes);
   }, [location.pathname]);
 
@@ -33,17 +50,20 @@ export default function Admin(props) {
     }
     return activeRoute;
   };
+
   const getActiveNavbar = (routes) => {
     let activeNavbar = false;
     for (let i = 0; i < routes.length; i++) {
       if (
-        window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+        window.location.href.indexOf(routes[i].layout + routes[i].path) !==
+        -1
       ) {
         return routes[i].secondary;
       }
     }
     return activeNavbar;
   };
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
@@ -56,41 +76,43 @@ export default function Admin(props) {
     });
   };
 
-  document.documentElement.dir = "ltr";
   return (
-    <div className="flex h-full w-full">
-      <Sidebar open={open} onClose={() => setOpen(false)} />
-      {/* Navbar & Main Content */}
-      <div className="h-full w-full bg-lightPrimary dark:!bg-navy-900">
-        {/* Main Content */}
-        <main
-          className={`mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]`}
-        >
-          {/* Routes */}
-          <div className="h-full">
-            <Navbar
-              onOpenSidenav={() => setOpen(true)}
-              logoText={"Profitex"}
-              brandText={currentRoute}
-              secondary={getActiveNavbar(routes)}
-              {...rest}
-            />
-            <div className="pt-5s mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
-              <Routes>
-                {getRoutes(routes)}
+    <UserProvider value={userInfo}>
+      <div className="flex h-full w-full">
+        <Sidebar open={open} onClose={() => setOpen(false)} />
+        {/* Navbar & Main Content */}
+        <div className="h-full w-full bg-lightPrimary dark:!bg-navy-900">
+          {/* Main Content */}
+          <main
+            className={`mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]`}
+          >
+            {/* Routes */}
+            <div className="h-full">
+              <Navbar
+                onOpenSidenav={() => setOpen(true)}
+                logoText={"Profitex"}
+                brandText={currentRoute}
+                userInf={userInfo}
+                secondary={getActiveNavbar(routes)}
+                {...rest}
+              />
+              <div className="pt-5s mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
+                <Routes>
+                  {getRoutes(routes)}
 
-                <Route
-                  path="/"
-                  element={<Navigate to="/admin/default" replace />}
-                />
-              </Routes>
+                  <Route
+                    path="/"
+                    element={<Navigate to="/admin/default" replace />}
+                  />
+                </Routes>
+              </div>
+              <div className="p-3">
+                <Footer />
+              </div>
             </div>
-            <div className="p-3">
-              <Footer />
-            </div>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
-    </div>
+    </UserProvider>
   );
 }

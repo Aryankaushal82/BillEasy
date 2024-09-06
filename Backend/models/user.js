@@ -10,12 +10,14 @@ const userSchema = new mongoose.Schema({
     admin_ref: { type: String, required: true,unique: true},
     branch_id: { type: mongoose.Schema.Types.ObjectId,ref:'branch', required: true},
     user_fullname: { type: String,},
-    user_designation: { type: String},
-    user_role: { type: String },
+    user_designation: { type: String,default:"Branch Manager"},
+    user_role: { type: String ,default:"user" },
     user_status: { type: String },
     user_profile: { type: String},
-    user_phone_number: { type: Number, default:1010101010},
+    user_phone_number: { type: Number, default:7888593684},
     user_refreshToken:{type:String},
+    user_company_name:{type:String,default:"My Anatomy"},
+    
 }, { timestamps: true });
 
 

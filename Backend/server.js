@@ -7,7 +7,7 @@ const PORT = 3000;
 // Middleware to parse JSON requests
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors({origin: 'http://localhost:3001', // Replace with your frontend port
+app.use(cors({origin: 'http://localhost:3001',
     credentials: true,}));
 
 
